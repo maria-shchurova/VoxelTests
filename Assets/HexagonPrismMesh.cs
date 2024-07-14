@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class HexagonPrismMesh : MonoBehaviour
 {
     private MeshFilter meshFilter;
@@ -10,7 +9,6 @@ public class HexagonPrismMesh : MonoBehaviour
     void Awake()
     {
         meshFilter = gameObject.GetComponent<MeshFilter>();
-        meshRenderer = gameObject.GetComponent<MeshRenderer>();
         mesh = new Mesh();
         meshFilter.mesh = mesh;
         CreateHexagonPrismMesh();
@@ -18,8 +16,6 @@ public class HexagonPrismMesh : MonoBehaviour
 
     void CreateHexagonPrismMesh()
     {
-        float outerRadius = 1f;
-        float innerRadius = outerRadius * Mathf.Sqrt(3) / 2;
         float height = 1f;
 
         Vector3[] vertices = new Vector3[14];
@@ -28,7 +24,7 @@ public class HexagonPrismMesh : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             float angle = Mathf.PI / 3 * i;
-            vertices[i] = new Vector3(outerRadius * Mathf.Cos(angle), 0, outerRadius * Mathf.Sin(angle));
+            vertices[i] = new Vector3(HexMetrics.outerRadius * Mathf.Cos(angle), 0, HexMetrics.outerRadius * Mathf.Sin(angle));
         }
 
         // Top hexagon
@@ -75,8 +71,29 @@ public class HexagonPrismMesh : MonoBehaviour
             triangles[36 + 6 * i + 5] = 6 + next;
         }
 
+        // UVs
+        Vector2[] uvs = new Vector2[14];
+
+        // Bottom face UVs
+        for (int i = 0; i < 6; i++)
+        {
+            float angle = Mathf.PI / 3 * i;
+            uvs[i] = new Vector2(0.5f + Mathf.Cos(angle) * 0.5f, 0.5f + Mathf.Sin(angle) * 0.5f);
+        }
+        uvs[12] = new Vector2(0.5f, 0.5f); // Center of bottom face
+
+        // Top face UVs
+        for (int i = 0; i < 6; i++)
+        {
+            float angle = Mathf.PI / 3 * i;
+            uvs[i + 6] = new Vector2(0.5f + Mathf.Cos(angle) * 0.5f, 0.5f + Mathf.Sin(angle) * 0.5f);
+        }
+        uvs[13] = new Vector2(0.5f, 0.5f); // Center of top face
+
+        // Assigning data to the mesh
         mesh.vertices = vertices;
         mesh.triangles = triangles;
+        mesh.uv = uvs;
         mesh.RecalculateNormals();
     }
 }
