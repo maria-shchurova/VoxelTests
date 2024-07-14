@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class HexGrid : MonoBehaviour
 {
@@ -13,9 +14,12 @@ public class HexGrid : MonoBehaviour
 	public Text cellLabelPrefab;
 	Canvas gridCanvas;
 
+	HexMesh hexMesh;
+
 	void Awake()
 	{
 		gridCanvas = GetComponentInChildren<Canvas>();
+		hexMesh = GetComponentInChildren<HexMesh>();
 
 		cells = new HexCell[height * width];
 
@@ -28,10 +32,16 @@ public class HexGrid : MonoBehaviour
 		}
 	}
 
+    private void Start()
+    {
+		hexMesh.Triangulate(cells);
+	}
+
+
 	void CreateCell(int x, int z, int i)
 	{
 		Vector3 position;
-		position.x = x * (HexMetrics.innerRadius * 2f);
+		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
 		position.y = 0f;
 		position.z = z * (HexMetrics.outerRadius * 1.5f);
 
