@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/HexagonPrismMesh.cs.meta
+guid: 2b1831aac37c042428c0ef70efe995a5
+========
+guid: 0fc9a45f6f9c97e4e9258e62ab3eb76d
+>>>>>>>> catlikecoding_approach:Assets/HexGrid.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
