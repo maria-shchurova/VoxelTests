@@ -9,6 +9,7 @@ public class HexGrid : MonoBehaviour
 	public HexCell cellPrefab;
 
 	HexCell[] cells;
+	HexCell[,,] cashedCells;
 
 	HexMesh hexMesh;
 	MeshCollider meshCollider;
@@ -19,14 +20,15 @@ public class HexGrid : MonoBehaviour
 		meshCollider = gameObject.AddComponent<MeshCollider>();
 
 		cells = new HexCell[size * size * size];
+		cashedCells = new HexCell[size, size, size];
 
-		for (int z = 0, i = 0; z < size; z++)
+		for (int x = 0, i = 0; x < size; x++)
 		{
-			for (int x = 0; x < size; x++)
+			for (int y = 0; y < size; y++)
 			{
-				for (int y = 0; y < size; y++)
+				for (int z = 0; z < size; z++)
 				{
-					CreateCell(x, z, y, i++);
+					CreateCell(x, y, z, i++);
 				}
 			}
 		}
@@ -39,7 +41,7 @@ public class HexGrid : MonoBehaviour
 	}
 
 
-	void CreateCell(int x, int z,int y, int i)
+	void CreateCell(int x, int y,int z, int i)
 	{
 		Vector3 position;
 		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
@@ -47,9 +49,18 @@ public class HexGrid : MonoBehaviour
 		position.z = z * (HexMetrics.outerRadius * 1.5f);
 
 		HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
+		cashedCells[x, y, z] = cell;
+
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
 	}
 
-	
+	private bool IsFaceVisible(int x, int y, int z)
+	{
+		// Check if the neighboring voxel in the given direction is inactive or out of bounds
+		if (x < 0 || x >= size || y < 0 || y >= size || z < 0 || z >= size)
+			return true; // Face is at the boundary of the chunk
+
+		return !cashedCells[x, z, y].isActive; 
+	}
 }
