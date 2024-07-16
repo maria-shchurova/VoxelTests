@@ -221,9 +221,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 6
   height: 6
+  depth: 6
   cellPrefab: {fileID: 5470409946644638867, guid: 53ca23f62edeff441be7cee5ada846ac, type: 3}
-  cellLabelPrefab: {fileID: 301257455101210808, guid: 525049e250db3af4fa1d2997d1124e7c, type: 3}
-  prismPrefab: {fileID: 6480828470132913211, guid: 489812bd8f4510243b302169288c7df1, type: 3}
 --- !u!4 &469999347
 Transform:
   m_ObjectHideFlags: 0
@@ -401,7 +400,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 6c12df8d219e86e4aa1199c3e6beaace, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

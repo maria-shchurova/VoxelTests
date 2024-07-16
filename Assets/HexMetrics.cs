@@ -17,24 +17,5 @@ public static class HexMetrics
 		new Vector3(-innerRadius, 0f, -0.5f * outerRadius),
 		new Vector3(-innerRadius, 0f, 0.5f * outerRadius),
 		new Vector3(0f, 0f, outerRadius) //"7th" corner which is actially the first, for mesh generation
-
-		////top
-		//new Vector3(0f, outerRadius, 5),
-		//new Vector3(innerRadius, height, 0.5f * outerRadius),
-		//new Vector3(innerRadius, height, -0.5f * outerRadius),
-		//new Vector3(0f, height, -outerRadius),
-		//new Vector3(-innerRadius, height, -0.5f * outerRadius),
-		//new Vector3(-innerRadius, height, 0.5f * outerRadius),
-		//new Vector3(0f, outerRadius, height), //"7th" corner which is actially the first, for mesh generation
-	};
-
-	public static Vector3[] cornersTOP = {
-		new Vector3(0f, height, outerRadius),
-		new Vector3(innerRadius, height, 0.5f * outerRadius),
-		new Vector3(innerRadius, height, -0.5f * outerRadius),
-		new Vector3(0f, height, -outerRadius),
-		new Vector3(-innerRadius, height, -0.5f * outerRadius),
-		new Vector3(-innerRadius, height, 0.5f * outerRadius),
-		new Vector3(0f, height, outerRadius), //"7th" corner which is actially the first, for mesh generation
 	};
 }
