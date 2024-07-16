@@ -11,6 +11,7 @@ public class HexGrid : MonoBehaviour
 
 	HexCell[] cells;
 
+	private Dictionary<HexCoordinates, HexCell> CellByCoordinates;
 	public Text cellLabelPrefab;
 	Canvas gridCanvas;
 
@@ -26,6 +27,7 @@ public class HexGrid : MonoBehaviour
 		meshCollider = gameObject.AddComponent<MeshCollider>();
 
 		cells = new HexCell[height * width];
+		CellByCoordinates = new Dictionary<HexCoordinates, HexCell>();
 
 		for (int z = 0, i = 0; z < height; z++)
 		{
@@ -66,6 +68,7 @@ public class HexGrid : MonoBehaviour
 		HexCoordinates coordinates = HexCoordinates.FromPosition(position);
 
 		Instantiate<HexagonPrismMesh>(prismPrefab, HexCoordinates.ToPosition(coordinates), Quaternion.identity);
+		//hexMesh.Triangulate3D(GetCellAtCoordinates(coordinates));
 		Debug.Log("touched at " + coordinates.ToString());
 	}
 
@@ -81,6 +84,7 @@ public class HexGrid : MonoBehaviour
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
 		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
+		CellByCoordinates.Add(cell.coordinates, cell);
 
 		Text label = Instantiate<Text>(cellLabelPrefab);
 		label.rectTransform.SetParent(gridCanvas.transform, false);
@@ -89,4 +93,9 @@ public class HexGrid : MonoBehaviour
 		label.text = cell.coordinates.ToStringOnSeparateLines();
 
 	}
+
+	HexCell GetCellAtCoordinates(HexCoordinates cellCoordinates)
+    {
+		return CellByCoordinates[cellCoordinates];
+    }
 }
