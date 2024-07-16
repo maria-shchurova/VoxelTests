@@ -24,20 +24,22 @@ public class TestOneCell : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < HexMetrics.corners.Length; i++)
-        {
-            GameObject obj = Instantiate(prefab, HexMetrics.corners[i], Quaternion.identity);
-            obj.name = i.ToString();
-            GameObject obj2 = Instantiate(prefab, HexMetrics.cornersTOP[i], Quaternion.identity);
-            obj2.name = "top " + i.ToString();
-        }
-        GameObject bC = Instantiate(prefab, transform.position, Quaternion.identity);
-        bC.name = "bottomCenter";
-        bottomCenter = bC.transform.position;
+        //for (int i = 0; i < HexMetrics.corners.Length; i++)
+        //{
+        //    GameObject obj = Instantiate(prefab, HexMetrics.corners[i], Quaternion.identity);
+        //    obj.name = i.ToString();
+        //    GameObject obj2 = Instantiate(prefab, HexMetrics.cornersTOP[i], Quaternion.identity);
+        //    obj2.name = "top " + i.ToString();
+        //}
+        //GameObject bC = Instantiate(prefab, transform.position, Quaternion.identity);
+        //bC.name = "bottomCenter";
+        //bottomCenter = bC.transform.position;
+        bottomCenter = transform.position;
 
-        GameObject tC = Instantiate(prefab, transform.position + Vector3.up * HexMetrics.height, Quaternion.identity);
-        tC.name = "topCenter";
-        topCenter = tC.transform.position;
+        //GameObject tC = Instantiate(prefab, transform.position + Vector3.up * HexMetrics.height, Quaternion.identity);
+        //tC.name = "topCenter";
+        //topCenter = tC.transform.position;
+        topCenter = transform.position + Vector3.up * HexMetrics.height;
 
         Triangulate();
         myMesh.vertices = vertices.ToArray();

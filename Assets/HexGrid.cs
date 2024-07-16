@@ -13,7 +13,7 @@ public class HexGrid : MonoBehaviour
 
 	private Dictionary<HexCoordinates, HexCell> CellByCoordinates;
 	public Text cellLabelPrefab;
-	Canvas gridCanvas;
+	//Canvas gridCanvas;
 
 	HexMesh hexMesh;
 	MeshCollider meshCollider;
@@ -22,7 +22,7 @@ public class HexGrid : MonoBehaviour
 
 	void Awake()
 	{
-		gridCanvas = GetComponentInChildren<Canvas>();
+		//gridCanvas = GetComponentInChildren<Canvas>();
 		hexMesh = GetComponentInChildren<HexMesh>();
 		meshCollider = gameObject.AddComponent<MeshCollider>();
 
@@ -86,11 +86,10 @@ public class HexGrid : MonoBehaviour
 		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
 		CellByCoordinates.Add(cell.coordinates, cell);
 
-		Text label = Instantiate<Text>(cellLabelPrefab);
-		label.rectTransform.SetParent(gridCanvas.transform, false);
-		label.rectTransform.anchoredPosition =
-			new Vector2(position.x, position.z);
-		label.text = cell.coordinates.ToStringOnSeparateLines();
+		//Text label = Instantiate<Text>(cellLabelPrefab);
+		//label.rectTransform.SetParent(gridCanvas.transform, false);
+		//label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
+		//label.text = cell.coordinates.ToStringOnSeparateLines();
 
 	}
 

@@ -29,12 +29,12 @@ public static class HexMetrics
 	};
 
 	public static Vector3[] cornersTOP = {
-		new Vector3(0f, outerRadius, outerRadius),
+		new Vector3(0f, height, outerRadius),
 		new Vector3(innerRadius, height, 0.5f * outerRadius),
 		new Vector3(innerRadius, height, -0.5f * outerRadius),
 		new Vector3(0f, height, -outerRadius),
 		new Vector3(-innerRadius, height, -0.5f * outerRadius),
 		new Vector3(-innerRadius, height, 0.5f * outerRadius),
-		new Vector3(0f, outerRadius, height), //"7th" corner which is actially the first, for mesh generation
+		new Vector3(0f, height, outerRadius), //"7th" corner which is actially the first, for mesh generation
 	};
 }
