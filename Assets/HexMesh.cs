@@ -40,6 +40,13 @@ public class HexMesh : MonoBehaviour
 		Vector3 centerTop = hexCell.transform.localPosition + new Vector3(0, HexMetrics.height, 0);
 		for (int i = 0; i < 6; i++)
 		{
+			// Top face
+			AddTriangle(
+				centerTop,
+				centerTop + HexMetrics.corners[i],
+				centerTop + HexMetrics.corners[i + 1]
+			);
+
 			// Bottom face
 			AddTriangle(
 				center + HexMetrics.corners[i + 1],
@@ -47,24 +54,19 @@ public class HexMesh : MonoBehaviour
 				center
 			);
 
-            // Top face
-            AddTriangle(
-                centerTop,
-                centerTop + HexMetrics.cornersTOP[i],
-                centerTop + HexMetrics.cornersTOP[i + 1]
-            );
+  
 
             // Side face 1
             AddTriangle(
-                centerTop + HexMetrics.cornersTOP[i + 1],
-                centerTop + HexMetrics.cornersTOP[i],
+                centerTop + HexMetrics.corners[i + 1],
+                centerTop + HexMetrics.corners[i],
                 center + HexMetrics.corners[i]
             );
 
             // Side face 2
             AddTriangle(
                 center + HexMetrics.corners[i + 1],
-                centerTop + HexMetrics.cornersTOP[i + 1],
+                centerTop + HexMetrics.corners[i + 1],
                 center + HexMetrics.corners[i]
             );
         }
