@@ -50,10 +50,12 @@ public class HexGrid : MonoBehaviour
 
 		HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
 		cell.isActive = true;
-		cellsByCoordinates.Add(cell.position, cell);
 
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
+
+		cellsByCoordinates.Add(cell.transform.localPosition, cell);
+
 	}
 
 

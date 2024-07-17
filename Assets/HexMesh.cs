@@ -10,7 +10,8 @@ public class HexMesh : MonoBehaviour
 	List<Vector3> vertices;
 	List<int> triangles;
 
-	HexGrid hexGrid;
+	[SerializeField]
+	private HexGrid hexGrid;
 
 	void Awake()
 	{
@@ -42,21 +43,25 @@ public class HexMesh : MonoBehaviour
 		Vector3 centerTop = hexCell.transform.localPosition + new Vector3(0, HexMetrics.height, 0);
 		for (int i = 0; i < 6; i++)
 		{
-			// Top face
-			AddTriangle(
-				centerTop,
-				centerTop + HexMetrics.corners[i],
-				centerTop + HexMetrics.corners[i + 1]
-			);
+			if(!IsFaceVisible(center + Vector3.up)) //if neighboring on above cell is NOT active
+            {
+				// Top face
+				AddTriangle(
+					centerTop,
+					centerTop + HexMetrics.corners[i],
+					centerTop + HexMetrics.corners[i + 1]
+				);
+			}
 
-			// Bottom face
-			AddTriangle(
+			if (!IsFaceVisible(center + Vector3.down)) //if neighboring below cell is NOT active
+            {
+				// Bottom face
+				AddTriangle(
 				center + HexMetrics.corners[i + 1],
 				center + HexMetrics.corners[i],
 				center
 			);
-
-  
+			}  
 
             // Side face 1
             AddTriangle(
@@ -85,12 +90,15 @@ public class HexMesh : MonoBehaviour
 		triangles.Add(vertexIndex + 2);
 	}
 
-	private bool IsFaceVisible(int x, int y, int z)
+	private bool IsFaceVisible(Vector3 direction)
 	{
 		HexCell neighbour;
-		hexGrid.cellsByCoordinates.TryGetValue(new Vector3(x, y, z), out neighbour);
+		hexGrid.cellsByCoordinates.TryGetValue(direction, out neighbour);
 
-		return neighbour.isActive;
+		if (neighbour != null)
+			return neighbour.isActive;
+		else
+			return false;
 	}
 
 }
