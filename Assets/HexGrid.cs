@@ -1,15 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
+
 public class HexGrid : MonoBehaviour
 {
-	//public int width = 6;
-	//public int height = 6;
-	//public int depth = 6;
 	public int size;
 
 	public HexCell cellPrefab;
 
 	HexCell[] cells;
-	HexCell[,,] cashedCells;
+
+	public Dictionary<Vector3, HexCell> cellsByCoordinates;
 
 	HexMesh hexMesh;
 	MeshCollider meshCollider;
@@ -19,8 +19,8 @@ public class HexGrid : MonoBehaviour
 		hexMesh = GetComponentInChildren<HexMesh>();
 		meshCollider = gameObject.AddComponent<MeshCollider>();
 
+		cellsByCoordinates = new Dictionary<Vector3, HexCell>();
 		cells = new HexCell[size * size * size];
-		cashedCells = new HexCell[size, size, size];
 
 		for (int x = 0, i = 0; x < size; x++)
 		{
@@ -49,18 +49,12 @@ public class HexGrid : MonoBehaviour
 		position.z = z * (HexMetrics.outerRadius * 1.5f);
 
 		HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
-		cashedCells[x, y, z] = cell;
+		cell.isActive = true;
+		cellsByCoordinates.Add(cell.position, cell);
 
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
 	}
 
-	private bool IsFaceVisible(int x, int y, int z)
-	{
-		// Check if the neighboring voxel in the given direction is inactive or out of bounds
-		if (x < 0 || x >= size || y < 0 || y >= size || z < 0 || z >= size)
-			return true; // Face is at the boundary of the chunk
 
-		return !cashedCells[x, z, y].isActive; 
-	}
 }

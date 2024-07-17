@@ -10,6 +10,8 @@ public class HexMesh : MonoBehaviour
 	List<Vector3> vertices;
 	List<int> triangles;
 
+	HexGrid hexGrid;
+
 	void Awake()
 	{
 		GetComponent<MeshFilter>().mesh = hexMesh = new Mesh();
@@ -81,6 +83,14 @@ public class HexMesh : MonoBehaviour
 		triangles.Add(vertexIndex);
 		triangles.Add(vertexIndex + 1);
 		triangles.Add(vertexIndex + 2);
+	}
+
+	private bool IsFaceVisible(int x, int y, int z)
+	{
+		HexCell neighbour;
+		hexGrid.cellsByCoordinates.TryGetValue(new Vector3(x, y, z), out neighbour);
+
+		return neighbour.isActive;
 	}
 
 }
