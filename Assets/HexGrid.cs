@@ -17,7 +17,7 @@ public class HexGrid : MonoBehaviour
 	void Awake()
 	{
 		hexMesh = GetComponentInChildren<HexMesh>();
-		meshCollider = gameObject.AddComponent<MeshCollider>();
+		//meshCollider = gameObject.AddComponent<MeshCollider>();
 
 		cellsByCoordinates = new Dictionary<Vector3, HexCell>();
 		cells = new HexCell[size * size * size];
@@ -37,7 +37,7 @@ public class HexGrid : MonoBehaviour
     private void Start()
     {
 		hexMesh.Triangulate(cells);
-		meshCollider.sharedMesh = hexMesh.GetComponent<MeshFilter>().mesh;
+		//meshCollider.sharedMesh = hexMesh.GetComponent<MeshFilter>().mesh;
 	}
 
 
