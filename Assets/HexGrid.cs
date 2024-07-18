@@ -22,11 +22,11 @@ public class HexGrid : MonoBehaviour
 		cellsByCoordinates = new Dictionary<Vector3, HexCell>();
 		cells = new HexCell[size * size * size];
 
-		for (int x = 0, i = 0; x < size; x++)
+		for (int z = 0, i = 0; z < size; z++)
 		{
 			for (int y = 0; y < size; y++)
 			{
-				for (int z = 0; z < size; z++)
+				for (int x = 0; x < size; x++)
 				{
 					CreateCell(x, y, z, i++);
 				}
@@ -50,6 +50,30 @@ public class HexGrid : MonoBehaviour
 
 		HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
 		cell.isActive = true;
+
+		if (x > 0)
+		{
+			cell.SetNeighbor(HexDirection.W, cells[i - 1]);
+		}
+		if (z > 0)
+		{
+			if ((z & 1) == 0)
+			{
+				cell.SetNeighbor(HexDirection.SE, cells[i - size]);
+				if (x > 0)
+				{
+					cell.SetNeighbor(HexDirection.SW, cells[i - size - 1]);
+				}
+			}
+			else
+			{
+				cell.SetNeighbor(HexDirection.SW, cells[i - size]);
+				if (x < size - 1)
+				{
+					cell.SetNeighbor(HexDirection.SE, cells[i - size + 1]);
+				}
+			}
+		}
 
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;

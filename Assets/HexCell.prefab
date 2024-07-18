@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 172827514592025701}
   - component: {fileID: 5470409946644638867}
-  - component: {fileID: 8873780451557407893}
   m_Layer: 0
   m_Name: HexCell
   m_TagString: Untagged
@@ -48,16 +47,10 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   color: {r: 0, g: 0, b: 0, a: 0}
   isActive: 0
---- !u!114 &8873780451557407893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8748403415035865539}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e359634d039cb434d96f1790fc44a099, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugSphere: {fileID: 361079024815847873, guid: 3c3f9c6afeaad27439552ae7b3ed0e6b, type: 3}
+  neighbors:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
