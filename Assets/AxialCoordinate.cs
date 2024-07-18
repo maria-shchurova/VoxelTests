@@ -23,14 +23,21 @@ public struct AxialCoordinate
         R = r;
     }
 
-    public static readonly AxialCoordinate[] NeighborDirections = {
-    new AxialCoordinate(1, 0),    // East
-    new AxialCoordinate(1, -1),   // North-East
-    new AxialCoordinate(0, -1),   // North-West
-    new AxialCoordinate(-1, 0),   // West
-    new AxialCoordinate(-1, 1),   // South-West
-    new AxialCoordinate(0, 1)     // South-East
-};
+    public readonly AxialCoordinate ApplyDirection(AxialAxes axes, int delta)
+    {
+        switch (axes)
+        {
+            case AxialAxes.QS:
+                return new AxialCoordinate(Q + delta, R);
+            case AxialAxes.RS:
+                return new AxialCoordinate(Q, R + delta);
+            case AxialAxes.QR:
+                return new AxialCoordinate(Q + delta, R - delta);
+            default:
+                throw new System.Exception();
+        }
+    }
+
 
     public static AxialCoordinate CubeToAxial(Vector3Int cubeCoordinates)
     {

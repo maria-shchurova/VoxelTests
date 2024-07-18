@@ -60,5 +60,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e359634d039cb434d96f1790fc44a099, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 361079024815847873, guid: 3c3f9c6afeaad27439552ae7b3ed0e6b, type: 3}
-  directionInAxial: {x: 0, y: 0}
+  debugSphere: {fileID: 361079024815847873, guid: 3c3f9c6afeaad27439552ae7b3ed0e6b, type: 3}
