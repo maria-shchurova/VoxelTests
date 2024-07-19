@@ -1,4 +1,4 @@
-using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -42,7 +42,7 @@ public class HexGrid : MonoBehaviour
 	}
 
 
-	void CreateCell(int x, int y,int z, int i)
+	private async Task CreateCell(int x, int y,int z, int i)
 	{
 		Vector3 position;
 		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);

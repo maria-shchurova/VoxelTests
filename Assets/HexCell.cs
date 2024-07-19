@@ -16,6 +16,10 @@ public class HexCell : MonoBehaviour
         this.color = color;
         this.isActive = isActive;
     }
+    public HexCell GetNeighbor(int index)
+    {
+        return neighbors[index];
+    }
 
     public HexCell GetNeighbor(HexDirection direction)
     {

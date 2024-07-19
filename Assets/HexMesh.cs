@@ -61,21 +61,31 @@ public class HexMesh : MonoBehaviour
 				center + HexMetrics.corners[i],
 				center
 			);
-			}  
+			}
+			// 0 face is NE
+			// 1 face is E
+			// 2 face is SE
+			// 3 face is SW
+			// 4 face is W
+			// 5 face is NW
 
-            // Side face 1
-            AddTriangle(
-                centerTop + HexMetrics.corners[i + 1],
-                centerTop + HexMetrics.corners[i],
-                center + HexMetrics.corners[i]
-            );
+			if (hexCell.GetNeighbor(i) == null || !hexCell.GetNeighbor(i).isActive)
+            {
+				// Side face 1
+				AddTriangle(
+					centerTop + HexMetrics.corners[i + 1],
+					centerTop + HexMetrics.corners[i],
+					center + HexMetrics.corners[i]
+				);
 
-            // Side face 2
-            AddTriangle(
-                center + HexMetrics.corners[i + 1],
-                centerTop + HexMetrics.corners[i + 1],
-                center + HexMetrics.corners[i]
-            );
+				// Side face 2
+				AddTriangle(
+					center + HexMetrics.corners[i + 1],
+					centerTop + HexMetrics.corners[i + 1],
+					center + HexMetrics.corners[i]
+				);
+			}
+
         }
 	}
 
