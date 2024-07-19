@@ -21,10 +21,6 @@ public struct HexCoordinates
 		Z = z;
 	}
 
-	public static HexCoordinates FromOffsetCoordinates(int x, int z)
-	{
-		return new HexCoordinates(x - z / 2, z);
-	}
 
 	public static HexCoordinates FromPosition(Vector3 position)
 	{

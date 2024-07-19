@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class HexCell : MonoBehaviour
 {
-    public HexCoordinates coordinates;
+
+    public AxialCoordinate coordinates;
     public Vector3 position;
     public Color color;
     public bool isActive;

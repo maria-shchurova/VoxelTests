@@ -15,6 +15,13 @@ public struct AxialCoordinate
         -SQRT3 / 2f * Q - SQRT3 * R
         );
 
+    public static AxialCoordinate FromWorldPosition(Vector3 position)
+    {
+        float q = (2f / 3f * position.x) / HexMetrics.outerRadius;
+        float r = (-1f / 3f * position.x + Mathf.Sqrt(3) / 3f * position.z) / HexMetrics.outerRadius;
+        return RoundToAxial(q, r);
+    }
+
     public static readonly AxialCoordinate Zero = new AxialCoordinate(0, 0);
 
     public AxialCoordinate(int q, int r)
@@ -52,5 +59,26 @@ public struct AxialCoordinate
         int z = axial.R;
         int y = -x - z;
         return new Vector3Int(x, y, z);
+    }
+    private static AxialCoordinate RoundToAxial(float q, float r)
+    {
+        int qInt = Mathf.RoundToInt(q);
+        int rInt = Mathf.RoundToInt(r);
+        int sInt = Mathf.RoundToInt(-q - r);
+
+        float qDiff = Mathf.Abs(qInt - q);
+        float rDiff = Mathf.Abs(rInt - r);
+        float sDiff = Mathf.Abs(sInt + q + r);
+
+        if (qDiff > rDiff && qDiff > sDiff)
+        {
+            qInt = -rInt - sInt;
+        }
+        else if (rDiff > sDiff)
+        {
+            rInt = -qInt - sInt;
+        }
+
+        return new AxialCoordinate(qInt, rInt);
     }
 }
