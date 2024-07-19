@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -49,31 +50,11 @@ public class HexGrid : MonoBehaviour
 		position.z = z * (HexMetrics.outerRadius * 1.5f);
 
 		HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
+		cell.gameObject.name = $"cell {i} {x}_{y}_{z}";
 		cell.isActive = true;
 
-		if (x > 0)
-		{
-			cell.SetNeighbor(HexDirection.W, cells[i - 1]);
-		}
-		if (z > 0)
-		{
-			if ((z & 1) == 0)
-			{
-				cell.SetNeighbor(HexDirection.SE, cells[i - size]);
-				if (x > 0)
-				{
-					cell.SetNeighbor(HexDirection.SW, cells[i - size - 1]);
-				}
-			}
-			else
-			{
-				cell.SetNeighbor(HexDirection.SW, cells[i - size]);
-				if (x < size - 1)
-				{
-					cell.SetNeighbor(HexDirection.SE, cells[i - size + 1]);
-				}
-			}
-		}
+		AssignNeighbors(cell, x, y, z, size, i);
+
 
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
@@ -82,5 +63,30 @@ public class HexGrid : MonoBehaviour
 
 	}
 
-
+    private void AssignNeighbors(HexCell cell, int x, int y, int z, int size, int index)
+    {
+		if (x > 0)
+		{
+			cell.SetNeighbor(HexDirection.W, cells[index - 1]);
+		}
+		if (z > 0)
+		{
+			if ((z & 1) == 0)
+			{
+				cell.SetNeighbor(HexDirection.SE, cells[index - size * size]);
+				if (x > 0)
+				{
+					cell.SetNeighbor(HexDirection.SW, cells[index - size * size - 1]);
+				}
+			}
+			else
+			{
+				cell.SetNeighbor(HexDirection.SW, cells[index - size * size]);
+				if (x < size - 1)
+				{
+					cell.SetNeighbor(HexDirection.SE, cells[index - size * size + 1]);
+				}
+			}
+		}
+	}
 }
