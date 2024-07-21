@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class InteractionHandling : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+	[SerializeField]
+	private HexGrid hexGrid;
+
+	void Start()
     {
         
     }
@@ -25,7 +27,17 @@ public class InteractionHandling : MonoBehaviour
 		{
 			Vector3 worldPosition = hit.point;
 			AxialCoordinate axialCoord = AxialCoordinate.FromWorldPosition(worldPosition);
-			Debug.Log("Clicked on cell with coordinates: " + axialCoord.Q + ", " + axialCoord.R);
+
+			HexCell touchedCell;
+			if (hexGrid.cellsByAxialCoordinates.TryGetValue(axialCoord, out touchedCell))
+            {
+				//Debug.Log("Clicked on cell with coordinates: " + axialCoord.Q + ", " + axialCoord.R);
+				Debug.Log("Clicked on cell " + touchedCell.name);
+			}
+            else
+            {
+				Debug.Log("could not get cell with coordinates: " + axialCoord.Q + ", " + axialCoord.R);
+			}
 		}
 	}
 

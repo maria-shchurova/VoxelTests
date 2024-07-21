@@ -11,6 +11,7 @@ public class HexGrid : MonoBehaviour
 	HexCell[] cells;
 
 	public Dictionary<Vector3, HexCell> cellsByCoordinates;
+	public Dictionary<AxialCoordinate, HexCell> cellsByAxialCoordinates;
 
 	HexMesh hexMesh;
 	MeshCollider meshCollider;
@@ -21,6 +22,8 @@ public class HexGrid : MonoBehaviour
 		meshCollider = gameObject.AddComponent<MeshCollider>();
 
 		cellsByCoordinates = new Dictionary<Vector3, HexCell>();
+		cellsByAxialCoordinates = new Dictionary<AxialCoordinate, HexCell>();
+
 		cells = new HexCell[size * size * size];
 
 		for (int z = 0, i = 0; z < size; z++)
@@ -42,7 +45,7 @@ public class HexGrid : MonoBehaviour
 	}
 
 
-	private async Task CreateCell(int x, int y,int z, int i)
+	private void CreateCell(int x, int y,int z, int i)
 	{
 		Vector3 position;
 		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
@@ -61,6 +64,8 @@ public class HexGrid : MonoBehaviour
 
 		cellsByCoordinates.Add(cell.transform.localPosition, cell);
 
+		cell.coordinates = AxialCoordinate.FromWorldPosition(position);
+		cellsByAxialCoordinates.Add(cell.coordinates, cell);
 	}
 
     private void AssignNeighbors(HexCell cell, int x, int y, int z, int size, int index)
