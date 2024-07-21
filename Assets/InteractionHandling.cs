@@ -20,7 +20,12 @@ public class InteractionHandling : MonoBehaviour
 		if (Input.GetMouseButtonDown(0))
 		{
 			HandleInput();
-		}		
+		}
+
+		if (Input.GetKeyDown(KeyCode.T))
+		{
+			mesh.Triangulate(hexGrid.cells);
+		}
 
 	}
 

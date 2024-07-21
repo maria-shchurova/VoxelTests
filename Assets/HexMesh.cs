@@ -28,8 +28,8 @@ public class HexMesh : MonoBehaviour
 	public void Clear()
 	{
         hexMeshFilter.mesh.Clear(false);
-        hexMeshFilter.mesh.Clear();
-        hexMeshFilter.mesh.Clear();
+        vertices.Clear();
+        triangles.Clear();
 
         // Ensure all mesh data arrays are emptied
         hexMeshFilter.mesh.vertices = new Vector3[0];
