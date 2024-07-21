@@ -17,16 +17,11 @@ public class InteractionHandling : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetMouseButton(0))
+		if (Input.GetMouseButtonDown(0))
 		{
 			HandleInput();
 		}		
-		
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			mesh.Triangulate(hexGrid.cells);
-			Debug.Log("cleared mesh");
-		}
+
 	}
 
 	void HandleInput()
@@ -34,23 +29,35 @@ public class InteractionHandling : MonoBehaviour
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		if (Physics.Raycast(ray, out RaycastHit hit))
 		{
-			Vector3 worldPosition = hit.point;
-			AxialCoordinate axialCoord = AxialCoordinate.FromWorldPosition(worldPosition);
-
-			HexCell touchedCell;
-			if (hexGrid.cellsByAxialCoordinates.TryGetValue(axialCoord, out touchedCell))
+            if (GetCellAtWorldPosition(hit.point) != null)
             {
-				//Debug.Log("Clicked on cell with coordinates: " + axialCoord.Q + ", " + axialCoord.R);
-				touchedCell.isActive = !touchedCell.isActive;
-				mesh.Triangulate(hexGrid.cells);
-
-				Debug.Log("Clicked on cell " + touchedCell.name);
-			}
+                Debug.Log("Clicked on cell " + GetCellAtWorldPosition(hit.point).name);
+            }
             else
             {
-				Debug.Log("could not get cell with coordinates: " + axialCoord.Q + ", " + axialCoord.R);
+                Debug.Log("could not get closest cell at hit point");
+            }
+        }
+	}
+
+	HexCell GetCellAtWorldPosition(Vector3 worldPosition)
+	{
+		HexCell closestCell = null;
+		float closestDistanceSqr = float.MaxValue; // Initialize to a large number
+
+		foreach (var kvp in hexGrid.cellsByCoordinates)
+		{
+			Vector3 cellCenter = kvp.Key;
+			float distanceSqr = (worldPosition - cellCenter).sqrMagnitude; // Use squared magnitude to avoid square root calculation
+
+			if (distanceSqr < closestDistanceSqr)
+			{
+				closestDistanceSqr = distanceSqr;
+				closestCell = kvp.Value;
 			}
 		}
+
+		return closestCell;
 	}
 
 	void TouchCell(Vector3 position)

@@ -11,7 +11,6 @@ public class HexGrid : MonoBehaviour
 	public HexCell[] cells;
 
 	public Dictionary<Vector3, HexCell> cellsByCoordinates;
-	public Dictionary<AxialCoordinate, HexCell> cellsByAxialCoordinates;
 
 	[SerializeField]
 	private HexMesh hexMesh;
@@ -21,7 +20,6 @@ public class HexGrid : MonoBehaviour
 	{
 
 		cellsByCoordinates = new Dictionary<Vector3, HexCell>();
-		cellsByAxialCoordinates = new Dictionary<AxialCoordinate, HexCell>();
 
 		cells = new HexCell[size * size * size];
 
@@ -39,7 +37,7 @@ public class HexGrid : MonoBehaviour
 
     private void Start()
     {
-		//hexMesh.Triangulate(cells);
+		hexMesh.Triangulate(cells);
 	}
 
 
@@ -61,10 +59,7 @@ public class HexGrid : MonoBehaviour
 
 		cellsByCoordinates.Add(cell.transform.localPosition, cell);
 
-		cell.coordinates = AxialCoordinate.FromWorldPosition(position);
-		cellsByAxialCoordinates.Add(cell.coordinates, cell);
-
-		cell.gameObject.name = $"cell {cell.coordinates.Q}_{cell.coordinates.R}_{cell.coordinates.Y}";
+		cell.gameObject.name = $"cell {position.x}_{position.y}_{position.z}";
 
 	}
 

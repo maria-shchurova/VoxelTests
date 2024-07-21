@@ -4,7 +4,6 @@ public struct AxialCoordinate
 {
     public int Q { get; }
     public int R { get; }
-    public int Y { get; }
 
     public int S => -(Q + R);
 
@@ -19,20 +18,21 @@ public struct AxialCoordinate
 
     public static AxialCoordinate FromWorldPosition(Vector3 position)
     {
-        float q = (2f / 3f * position.x) / HexMetrics.outerRadius;
-        float r = (-1f / 3f * position.x + Mathf.Sqrt(3) / 3f * position.z) / HexMetrics.outerRadius;
-        int y = Mathf.RoundToInt(position.y / HexMetrics.height);
-        return RoundToAxial(q, r, y);
+        float q = (position.x * 2f / 3f) / HexMetrics.outerRadius;
+        float r = (-position.x * 1f / 3f  + Mathf.Sqrt(3) / 3f * position.z) / HexMetrics.outerRadius;
+        int iq = Mathf.RoundToInt(q);
+        int ir = Mathf.RoundToInt(r);
+
+        return RoundToAxial(q, r);
     }
 
 
-    public static readonly AxialCoordinate Zero = new AxialCoordinate(0, 0, 0);
+    public static readonly AxialCoordinate Zero = new AxialCoordinate(0, 0);
 
-    public AxialCoordinate(int q, int r, int y)
+    public AxialCoordinate(int q, int r)
     {
         Q = q;
         R = r;
-        Y = y;
     }
 
     public readonly AxialCoordinate ApplyDirection(AxialAxes axes, int delta)
@@ -40,11 +40,11 @@ public struct AxialCoordinate
         switch (axes)
         {
             case AxialAxes.QS:
-                return new AxialCoordinate(Q + delta, R, 0);
+                return new AxialCoordinate(Q + delta, R);
             case AxialAxes.RS:
-                return new AxialCoordinate(Q, R + delta, 0);
+                return new AxialCoordinate(Q, R + delta);
             case AxialAxes.QR:
-                return new AxialCoordinate(Q + delta, R - delta, 0);
+                return new AxialCoordinate(Q + delta, R - delta);
             default:
                 throw new System.Exception();
         }
@@ -56,7 +56,7 @@ public struct AxialCoordinate
         int q = cubeCoordinates.x;
         int r = cubeCoordinates.z;
         int y = cubeCoordinates.y;
-        return new AxialCoordinate(q, r, y);
+        return new AxialCoordinate(q, r);
     }
 
     public static Vector3Int AxialToCube(AxialCoordinate axial)
@@ -66,7 +66,7 @@ public struct AxialCoordinate
         int y = -x - z;
         return new Vector3Int(x, y, z);
     }
-    private static AxialCoordinate RoundToAxial(float q, float r, int y)
+    private static AxialCoordinate RoundToAxial(float q, float r)
     {
         int qInt = Mathf.RoundToInt(q);
         int rInt = Mathf.RoundToInt(r);
@@ -85,17 +85,16 @@ public struct AxialCoordinate
             rInt = -qInt - sInt;
         }
 
-        return new AxialCoordinate(qInt, rInt, y);
+        return new AxialCoordinate(qInt, rInt);
     }
 }
 
 public static class AxialCoordinateExtensions
 {
-    public static Vector3 ToWorldPosition(this AxialCoordinate coord)
+    public static Vector3 ToWorldPosition(this AxialCoordinate coord, float y)
     {
         float x = HexMetrics.outerRadius * (3f / 2f * coord.Q);
         float z = HexMetrics.outerRadius * (Mathf.Sqrt(3) / 2f * coord.Q + Mathf.Sqrt(3) * coord.R);
-        float y = coord.Y * HexMetrics.height;
         return new Vector3(x, y, z);
     }
 }
