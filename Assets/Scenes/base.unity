@@ -463,6 +463,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -537,13 +538,30 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.12502892, y: 0.7659471, z: -0.1567783, w: -0.61083007}
-  m_LocalPosition: {x: 6.6271973, y: 4.218109, z: 1.9708939}
+  m_LocalRotation: {x: -0.2373571, y: 0.23105237, z: -0.058234338, w: -0.9417459}
+  m_LocalPosition: {x: 40.626354, y: 40.15258, z: -27.329575}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95b1c960a4984924db79e8390f0c7ab3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceleration: 50
+  accSprintMultiplier: 4
+  lookSensitivity: 1
+  dampingCoefficient: 5
+  focusOnEnable: 0
 --- !u!1 &1472871984
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,7 +692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b1831aac37c042428c0ef70efe995a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 2
+  size: 20
   cellPrefab: {fileID: 5470409946644638867, guid: 53ca23f62edeff441be7cee5ada846ac, type: 3}
   cells: []
   hexMesh: {fileID: 190246726}

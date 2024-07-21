@@ -37,7 +37,7 @@ public class HexGrid : MonoBehaviour
 
     private void Start()
     {
-		//hexMesh.Triangulate(cells);
+		hexMesh.Triangulate(cells);
 	}
 
 

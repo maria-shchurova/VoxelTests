@@ -37,6 +37,7 @@ public class InteractionHandling : MonoBehaviour
             if (GetCellAtWorldPosition(hit.point) != null)
             {
                 Debug.Log("Clicked on cell " + GetCellAtWorldPosition(hit.point).name);
+				TouchCell(GetCellAtWorldPosition(hit.point));
             }
             else
             {
@@ -65,10 +66,10 @@ public class InteractionHandling : MonoBehaviour
 		return closestCell;
 	}
 
-	void TouchCell(Vector3 position)
+	void TouchCell(HexCell cell)
 	{
-		//position = transform.InverseTransformPoint(position);
-		Debug.Log("touched at " + position);
+		cell.isActive = !cell.isActive;
+		mesh.Triangulate(hexGrid.cells);
 	}
 
 }
