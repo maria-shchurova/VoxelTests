@@ -10,23 +10,28 @@ public class CameraControl : MonoBehaviour {
 
 	Vector3 velocity; // current velocity
 
-    bool Focused
-    {
-        get => Cursor.lockState == CursorLockMode.Locked;
-        set
-        {
-            Cursor.lockState = value ? CursorLockMode.Locked : CursorLockMode.None;
-            Cursor.visible = value == false;
-        }
-    }
+    //bool Focused
+    //{
+    //    get => Cursor.lockState == CursorLockMode.Locked;
+    //    set
+    //    {
+    //        Cursor.lockState = value ? CursorLockMode.Locked : CursorLockMode.None;
+    //        Cursor.visible = value == false;
+    //    }
+    //}
 
-    void OnEnable() {
-		if( focusOnEnable ) Focused = true;
+    //   void OnEnable() {
+    //	if( focusOnEnable ) Focused = true;
+    //}
+    //
+    void OnEnable()
+    {
+		Cursor.lockState = CursorLockMode.None;
 	}
 
-	void OnDisable() => Focused = false;
+    //void OnDisable() => Focused = false;
 
-	void Update() {
+    void Update() {
 		// Input
 		//if( Focused )
 			UpdateInput();
@@ -64,6 +69,8 @@ public class CameraControl : MonoBehaviour {
 
 		if( Input.GetKey( KeyCode.LeftShift ) )
 			return direction * ( acceleration * accSprintMultiplier ); // "sprinting"
+
+
 		return direction * acceleration; // "walking"
 	}
 }

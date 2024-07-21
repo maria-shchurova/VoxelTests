@@ -10,6 +10,9 @@ public class InteractionHandling : MonoBehaviour
 	[SerializeField]
 	private HexMesh mesh;
 
+	[SerializeField]
+	private BuildingManager modeManager;
+
 	void Start()
     {
         
@@ -68,7 +71,16 @@ public class InteractionHandling : MonoBehaviour
 
 	void TouchCell(HexCell cell)
 	{
-		cell.isActive = !cell.isActive;
+		if(modeManager.currentMode == BuildingMode.ADD)
+        {
+			cell.isActive = true;
+		}
+
+		if (modeManager.currentMode == BuildingMode.REMOVE)
+		{
+			cell.isActive = false;
+		}
+
 		mesh.Triangulate(hexGrid.cells);
 	}
 
