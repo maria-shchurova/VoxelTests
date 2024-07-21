@@ -8,18 +8,17 @@ public class HexGrid : MonoBehaviour
 
 	public HexCell cellPrefab;
 
-	HexCell[] cells;
+	public HexCell[] cells;
 
 	public Dictionary<Vector3, HexCell> cellsByCoordinates;
 	public Dictionary<AxialCoordinate, HexCell> cellsByAxialCoordinates;
 
-	HexMesh hexMesh;
-	MeshCollider meshCollider;
+	[SerializeField]
+	private HexMesh hexMesh;
+
 
 	void Awake()
 	{
-		hexMesh = GetComponentInChildren<HexMesh>();
-		meshCollider = gameObject.AddComponent<MeshCollider>();
 
 		cellsByCoordinates = new Dictionary<Vector3, HexCell>();
 		cellsByAxialCoordinates = new Dictionary<AxialCoordinate, HexCell>();
@@ -40,8 +39,7 @@ public class HexGrid : MonoBehaviour
 
     private void Start()
     {
-		hexMesh.Triangulate(cells);
-		meshCollider.sharedMesh = hexMesh.GetComponent<MeshFilter>().mesh;
+		//hexMesh.Triangulate(cells);
 	}
 
 
@@ -53,7 +51,6 @@ public class HexGrid : MonoBehaviour
 		position.z = z * (HexMetrics.outerRadius * 1.5f);
 
 		HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
-		cell.gameObject.name = $"cell {i} {x}_{y}_{z}";
 		cell.isActive = true;
 
 		AssignNeighbors(cell, x, y, z, size, i);
@@ -66,9 +63,12 @@ public class HexGrid : MonoBehaviour
 
 		cell.coordinates = AxialCoordinate.FromWorldPosition(position);
 		cellsByAxialCoordinates.Add(cell.coordinates, cell);
+
+		cell.gameObject.name = $"cell {cell.coordinates.Q}_{cell.coordinates.R}_{cell.coordinates.Y}";
+
 	}
 
-    private void AssignNeighbors(HexCell cell, int x, int y, int z, int size, int index)
+	private void AssignNeighbors(HexCell cell, int x, int y, int z, int size, int index)
     {
 		if (x > 0)
 		{

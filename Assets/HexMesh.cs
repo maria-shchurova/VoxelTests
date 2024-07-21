@@ -6,43 +6,69 @@ using System;
 public class HexMesh : MonoBehaviour
 {
 
-	Mesh hexMesh;
 	List<Vector3> vertices;
 	List<int> triangles;
 
 	[SerializeField]
 	private HexGrid hexGrid;
 
+	[SerializeField]
+	private MeshFilter hexMeshFilter;
+	[SerializeField]
+	private MeshCollider collider;
+
 	void Awake()
 	{
-		GetComponent<MeshFilter>().mesh = hexMesh = new Mesh();
-		hexMesh.name = "Hex Mesh";
+		hexMeshFilter.mesh = new Mesh();
+		hexMeshFilter.mesh.name = "Hex Mesh";
 		vertices = new List<Vector3>();
 		triangles = new List<int>();
 	}
 
+	public void Clear()
+	{
+        hexMeshFilter.mesh.Clear(false);
+        hexMeshFilter.mesh.Clear();
+        hexMeshFilter.mesh.Clear();
+
+        // Ensure all mesh data arrays are emptied
+        hexMeshFilter.mesh.vertices = new Vector3[0];
+        hexMeshFilter.mesh.triangles = new int[0];
+        hexMeshFilter.mesh.normals = new Vector3[0];
+
+        if (hexMeshFilter.mesh.vertices.Length > 0)
+        {
+            hexMeshFilter.mesh.UploadMeshData(true);
+            hexMeshFilter.mesh.RecalculateNormals();
+        }
+    }
+
 	public void Triangulate(HexCell[] cells)
 	{
-		hexMesh.Clear();
-		vertices.Clear();
-		triangles.Clear();
+		Clear();
 
-        for (int i = 0; i < cells.Length; i++)
+		for (int i = 0; i < cells.Length; i++)
         {
-            Triangulate(cells[i]);
-        }
 
-        hexMesh.vertices = vertices.ToArray();
-		hexMesh.triangles = triangles.ToArray();
-		hexMesh.RecalculateNormals();
+			if(cells[i].isActive)
+            {
+				Triangulate(cells[i]);
+			}
+		}
+
+		hexMeshFilter.mesh.vertices = vertices.ToArray();
+		hexMeshFilter.mesh.triangles = triangles.ToArray();
+		hexMeshFilter.mesh.RecalculateNormals();
+		collider.sharedMesh = GetComponent<MeshFilter>().mesh;
 	}
 
-    private void Triangulate(HexCell hexCell)
+	private void Triangulate(HexCell hexCell)
     {
 		Vector3 center = hexCell.transform.localPosition;
 		Vector3 centerTop = hexCell.transform.localPosition + new Vector3(0, HexMetrics.height, 0);
 		for (int i = 0; i < 6; i++)
 		{
+
 			if(!IsFaceVisible(center + Vector3.up)) //if neighboring on above cell is NOT active
             {
 				// Top face

@@ -7,6 +7,9 @@ public class InteractionHandling : MonoBehaviour
 	[SerializeField]
 	private HexGrid hexGrid;
 
+	[SerializeField]
+	private HexMesh mesh;
+
 	void Start()
     {
         
@@ -17,6 +20,12 @@ public class InteractionHandling : MonoBehaviour
 		if (Input.GetMouseButton(0))
 		{
 			HandleInput();
+		}		
+		
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			mesh.Triangulate(hexGrid.cells);
+			Debug.Log("cleared mesh");
 		}
 	}
 
@@ -32,6 +41,9 @@ public class InteractionHandling : MonoBehaviour
 			if (hexGrid.cellsByAxialCoordinates.TryGetValue(axialCoord, out touchedCell))
             {
 				//Debug.Log("Clicked on cell with coordinates: " + axialCoord.Q + ", " + axialCoord.R);
+				touchedCell.isActive = !touchedCell.isActive;
+				mesh.Triangulate(hexGrid.cells);
+
 				Debug.Log("Clicked on cell " + touchedCell.name);
 			}
             else

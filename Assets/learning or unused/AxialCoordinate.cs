@@ -25,6 +25,7 @@ public struct AxialCoordinate
         return RoundToAxial(q, r, y);
     }
 
+
     public static readonly AxialCoordinate Zero = new AxialCoordinate(0, 0, 0);
 
     public AxialCoordinate(int q, int r, int y)
@@ -90,11 +91,11 @@ public struct AxialCoordinate
 
 public static class AxialCoordinateExtensions
 {
-    public static Vector3 ToWorldPosition(this AxialCoordinate coord, float cellHeight)
+    public static Vector3 ToWorldPosition(this AxialCoordinate coord)
     {
         float x = HexMetrics.outerRadius * (3f / 2f * coord.Q);
         float z = HexMetrics.outerRadius * (Mathf.Sqrt(3) / 2f * coord.Q + Mathf.Sqrt(3) * coord.R);
-        float y = coord.Y * cellHeight;
+        float y = coord.Y * HexMetrics.height;
         return new Vector3(x, y, z);
     }
 }
