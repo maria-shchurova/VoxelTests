@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class HexGrid : MonoBehaviour
 {
@@ -12,10 +12,10 @@ public class HexGrid : MonoBehaviour
 
 	public Dictionary<Vector3, HexCell> cellsByCoordinates;
 
-	[SerializeField]
+	[Inject] 
 	private HexMesh hexMesh;
 
-
+	[Inject] private DiContainer _container;
 	void Awake()
 	{
 
@@ -48,7 +48,9 @@ public class HexGrid : MonoBehaviour
 		position.y = y * HexMetrics.height;
 		position.z = z * (HexMetrics.outerRadius * 1.5f);
 
-		HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
+		HexCell cell = cells[i] = _container.InstantiatePrefabForComponent<HexCell>(cellPrefab);
+
+		//HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
 		cell.isActive = true;
 
 		AssignNeighbors(cell, x, y, z, size, i);

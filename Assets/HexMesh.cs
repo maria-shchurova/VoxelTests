@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System;
+using Zenject;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class HexMesh : MonoBehaviour
@@ -9,7 +9,7 @@ public class HexMesh : MonoBehaviour
 	List<Vector3> vertices;
 	List<int> triangles;
 
-	[SerializeField]
+	[Inject]
 	private HexGrid hexGrid;
 
 	[SerializeField]
