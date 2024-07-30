@@ -6,9 +6,13 @@ public class HexCell : MonoBehaviour
     public bool isActive;
     public CellType type; 
 
-    [SerializeField]
-    HexCell[] neighbors;
-    
+    public HexCell[] neighbors;
+
+    private void Awake()
+    {
+        neighbors = new HexCell[6];
+    }
+
     public HexCell(CellType type, bool isActive = true)
     {
         this.isActive = isActive;

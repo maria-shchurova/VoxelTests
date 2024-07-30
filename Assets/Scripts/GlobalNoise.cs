@@ -1,18 +1,15 @@
-using System.Collections;
 using SimplexNoise;
-using UnityEngine;
-using Zenject;
 
 public static class GlobalNoise
 {
     public static float[,] GetNoise()
     {
-        Noise.Seed = HexGrid.Instance.noiseSeed;
+        Noise.Seed = World.Instance.noiseSeed;
         // The number of points to generate in the 1st and 2nd dimension
-        int width = HexGrid.Instance.size * HexGrid.Instance.size;
-        int height = HexGrid.Instance.size * HexGrid.Instance.size;
+        int width = World.Instance.chunkSize * World.Instance.worldSize;
+        int height = World.Instance.chunkSize * World.Instance.worldSize;
         // The scale of the noise. The greater the scale, the denser the noise gets
-        float scale = HexGrid.Instance.noiseScale;
+        float scale = World.Instance.noiseScale;
         float[,] noise = Noise.Calc2D(width, height, scale); // Returns an array containing 2D Simplex noise
 
         return noise;

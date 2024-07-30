@@ -1,40 +1,15 @@
-using SimplexNoise;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
-public class HexGrid : MonoBehaviour
+public class HexChunk : MonoBehaviour
 {
 	public int size;
-	public HexCell cellPrefab;
 	public HexCell[] cells;
 	public Dictionary<Vector3, HexCell> cellsByCoordinates;
 
-	public int noiseSeed = 1234;
-	public float maxHeight = 0.2f;
-	public float noiseScale = 0.015f;
-	public float[,] noiseArray;
-
-	public static HexGrid Instance { get; private set; }
-
-	[Inject] 
-	private HexMesh hexMesh;
-
-	[Inject] private DiContainer _container;
-
-	void Awake()
+	public void Initialize(int size, HexMesh mesh)
 	{
-		if (Instance == null)
-		{
-			Instance = this;
-			DontDestroyOnLoad(gameObject); // Optional: if you want this to persist across scenes
-		}
-		else
-		{
-			Destroy(gameObject);
-		}
-
-		noiseArray = GlobalNoise.GetNoise();
+		this.size = size;
 
 		cellsByCoordinates = new Dictionary<Vector3, HexCell>();
 
@@ -50,11 +25,9 @@ public class HexGrid : MonoBehaviour
 				}
 			}
 		}
-	}
 
-    private void Start()
-    {
-		hexMesh.Triangulate(cells);
+		mesh.Initialize(this);
+		mesh.Triangulate(cells);
 	}
 
 
@@ -65,28 +38,27 @@ public class HexGrid : MonoBehaviour
 		position.y = y * HexMetrics.height;
 		position.z = z * (HexMetrics.outerRadius * 1.5f);
 		
-		HexCell.CellType type = DetermineCellType(position.x, position.y, position.z);
-		HexCell cell = cells[i] = _container.InstantiatePrefabForComponent<HexCell>(cellPrefab);
-		
-		cell.isActive = type != HexCell.CellType.Air;
+		//HexCell.CellType type = DetermineCellType(position.x, position.y, position.z);
 
-		AssignNeighbors(cell, x, y, z, size, i);
+		var cellGO = new GameObject($"cell {position.x}_{position.y}_{position.z}");
 
+		HexCell cell = cells[i] = cellGO.AddComponent<HexCell>();
+
+		//cell.isActive = type != HexCell.CellType.Air;
+		cell.isActive = true;
 
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
+		AssignNeighbors(cell, x, y, z, size, i);
 
 		cellsByCoordinates.Add(cell.transform.localPosition, cell);
-
-		cell.gameObject.name = $"cell {position.x}_{position.y}_{position.z}";
-
 	}
 
     private HexCell.CellType DetermineCellType(float x, float y, float z)
     {
-		float noiseValue = GlobalNoise.GetGlobalNoiseValue(x, z, Instance.noiseArray);
+		float noiseValue = GlobalNoise.GetGlobalNoiseValue(x, z, World.Instance.noiseArray);
 		float normalizedNoiseValue = (noiseValue + 1) / 2;
-		float maxHeight = normalizedNoiseValue * Instance.maxHeight;
+		float maxHeight = normalizedNoiseValue * World.Instance.maxHeight;
 
 		if (y <= maxHeight)
 			return HexCell.CellType.Grass; // Solid voxel

@@ -4,13 +4,11 @@ using Zenject;
 public class BuilderInstaller : MonoInstaller
 {
     public GameObject hexCellPrefab;
-    public HexGrid hexGrid;
-    public HexMesh hexMesh;
+    public World terrainGeneator;
 
     public override void InstallBindings()
     {
-        Container.Bind<HexGrid>().FromInstance(hexGrid).AsSingle().NonLazy();
-        Container.Bind<HexMesh>().FromInstance(hexMesh).AsSingle().NonLazy();
+        Container.Bind<World>().FromInstance(terrainGeneator).AsSingle().NonLazy();
         Container.Bind<HexCell>().FromComponentInNewPrefab(hexCellPrefab).AsTransient();
     }
 }

@@ -44,13 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b4731829cfb31248ae203fbb9e4dd4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: 0, y: 0, z: 0}
-  color: {r: 0, g: 0, b: 0, a: 0}
   isActive: 0
-  neighbors:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  type: 0
+  neighbors: []

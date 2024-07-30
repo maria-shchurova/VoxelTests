@@ -5,7 +5,7 @@ using UnityEngine;
 public class InteractionHandling : MonoBehaviour
 {
 	[SerializeField]
-	private HexGrid hexGrid;
+	private HexChunk hexGrid;
 
 	[SerializeField]
 	private HexMesh mesh;

@@ -1,24 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Zenject;
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class HexMesh : MonoBehaviour
 {
-
 	List<Vector3> vertices;
 	List<int> triangles;
 
-	[Inject]
-	private HexGrid hexGrid;
-
-	[SerializeField]
+	private HexChunk hexGrid;
 	private MeshFilter hexMeshFilter;
-	[SerializeField]
 	private MeshCollider collider;
 
-	void Awake()
+	public void Initialize(HexChunk grid)
 	{
+		hexGrid = grid;
+		hexMeshFilter = GetComponent<MeshFilter>();
+		collider = GetComponent<MeshCollider>();
+
 		hexMeshFilter.mesh = new Mesh();
 		hexMeshFilter.mesh.name = "Hex Mesh";
 		vertices = new List<Vector3>();
