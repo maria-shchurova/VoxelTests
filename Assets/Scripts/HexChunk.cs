@@ -37,15 +37,17 @@ public class HexChunk : MonoBehaviour
 		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
 		position.y = y * HexMetrics.height;
 		position.z = z * (HexMetrics.outerRadius * 1.5f);
-		
-		//HexCell.CellType type = DetermineCellType(position.x, position.y, position.z);
+
+		Vector3 worldPos = transform.position + new Vector3(x, y, z);
+
+		HexCell.CellType type = DetermineCellType(worldPos.x, worldPos.y, worldPos.z);
 
 		var cellGO = new GameObject($"cell {position.x}_{position.y}_{position.z}");
 
 		HexCell cell = cells[i] = cellGO.AddComponent<HexCell>();
 
-		//cell.isActive = type != HexCell.CellType.Air;
-		cell.isActive = true;
+		cell.isActive = type != HexCell.CellType.Air;
+		//cell.isActive = true;
 
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
