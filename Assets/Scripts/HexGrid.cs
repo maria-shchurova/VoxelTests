@@ -6,19 +6,35 @@ using Zenject;
 public class HexGrid : MonoBehaviour
 {
 	public int size;
-
 	public HexCell cellPrefab;
-
 	public HexCell[] cells;
-
 	public Dictionary<Vector3, HexCell> cellsByCoordinates;
+
+	public int noiseSeed = 1234;
+	public float maxHeight = 0.2f;
+	public float noiseScale = 0.015f;
+	public float[,] noiseArray;
+
+	public static HexGrid Instance { get; private set; }
 
 	[Inject] 
 	private HexMesh hexMesh;
 
 	[Inject] private DiContainer _container;
+
 	void Awake()
 	{
+		if (Instance == null)
+		{
+			Instance = this;
+			DontDestroyOnLoad(gameObject); // Optional: if you want this to persist across scenes
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+
+		noiseArray = GlobalNoise.GetNoise();
 
 		cellsByCoordinates = new Dictionary<Vector3, HexCell>();
 
@@ -68,13 +84,11 @@ public class HexGrid : MonoBehaviour
 
     private HexCell.CellType DetermineCellType(float x, float y, float z)
     {
-		float noiseValue = Noise.CalcPixel3D((int)x, (int)y, (int)z, 0.1f);
+		float noiseValue = GlobalNoise.GetGlobalNoiseValue(x, z, Instance.noiseArray);
+		float normalizedNoiseValue = (noiseValue + 1) / 2;
+		float maxHeight = normalizedNoiseValue * Instance.maxHeight;
 
-		float threshold = 125f; // The threshold for determining solid/air
-
-		//Debug.Log(noiseValue);
-
-		if (noiseValue > threshold)
+		if (y <= maxHeight)
 			return HexCell.CellType.Grass; // Solid voxel
 		else
 			return HexCell.CellType.Air; // Air voxel

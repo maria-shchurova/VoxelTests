@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 64173970}
   - component: {fileID: 64173969}
   - component: {fileID: 64173968}
+  - component: {fileID: 64173971}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -207,13 +208,30 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 64173967}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.008456606, y: -0.94017494, z: 0.02341247, w: 0.33978155}
+  m_LocalPosition: {x: 51.788208, y: 11.571764, z: 36.829067}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &64173971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64173967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95b1c960a4984924db79e8390f0c7ab3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceleration: 50
+  accSprintMultiplier: 4
+  lookSensitivity: 1
+  dampingCoefficient: 5
+  focusOnEnable: 1
 --- !u!1 &687800221
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,9 +393,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b1831aac37c042428c0ef70efe995a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 5
+  size: 29
   cellPrefab: {fileID: 5470409946644638867, guid: 53ca23f62edeff441be7cee5ada846ac, type: 3}
   cells: []
+  noiseSeed: 1234
+  maxHeight: 0.2
+  noiseScale: 0.015
 --- !u!64 &687800229
 MeshCollider:
   m_ObjectHideFlags: 0
