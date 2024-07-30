@@ -7,6 +7,8 @@ public class HexChunk : MonoBehaviour
 	public HexCell[] cells;
 	public Dictionary<Vector3, HexCell> cellsByCoordinates;
 
+	public Vector3 Bounds;
+
 	public void Initialize(int size, HexMesh mesh)
 	{
 		this.size = size;
@@ -26,6 +28,13 @@ public class HexChunk : MonoBehaviour
 			}
 		}
 
+		Bounds = new Vector3()
+		{
+			x = transform.position.x * (HexMetrics.innerRadius * size * 2),
+			y = transform.position.y * size * HexMetrics.height,
+			z = transform.position.z * (HexMetrics.outerRadius * size * 1.5f)
+		};
+
 		mesh.Initialize(this);
 		mesh.Triangulate(cells);
 	}
@@ -40,14 +49,14 @@ public class HexChunk : MonoBehaviour
 
 		Vector3 worldPos = transform.position + new Vector3(x, y, z);
 
-		HexCell.CellType type = DetermineCellType(worldPos.x, worldPos.y, worldPos.z);
+		//HexCell.CellType type = DetermineCellType(worldPos.x, worldPos.y, worldPos.z);
 
 		var cellGO = new GameObject($"cell {position.x}_{position.y}_{position.z}");
 
 		HexCell cell = cells[i] = cellGO.AddComponent<HexCell>();
 
-		cell.isActive = type != HexCell.CellType.Air;
-		//cell.isActive = true;
+		//cell.isActive = type != HexCell.CellType.Air;
+		cell.isActive = true;
 
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;

@@ -63,6 +63,13 @@ public class HexMesh : MonoBehaviour
     {
 		Vector3 center = hexCell.transform.localPosition;
 		Vector3 centerTop = hexCell.transform.localPosition + new Vector3(0, HexMetrics.height, 0);
+
+		if (IsCellHiddenInChunk( center.x, center.y, center.z))
+        {
+			Debug.Log(hexCell.gameObject.name + " is hidden in chunk");
+			return;
+        }
+
 		for (int i = 0; i < 6; i++)
 		{
 
@@ -132,6 +139,23 @@ public class HexMesh : MonoBehaviour
 			return neighbour.isActive;
 		else
 			return false;
+	}
+
+	private bool IsCellHiddenInChunk(float x, float y, float z)
+    {
+
+		var maxX = hexGrid.Bounds.x; //this value should be global
+		var maxY = hexGrid.Bounds.y;
+		var maxZ = hexGrid.Bounds.z;
+		if (x < 0 || x >= maxX || y < 0 || y >= maxY || z < 0 || z >= maxZ)
+        {
+			return false; // Face is at the boundary of the chunk
+		}
+        else
+        {
+			return true;
+        }			
+
 	}
 
 }
