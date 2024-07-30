@@ -1,3 +1,4 @@
+using SimplexNoise;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -47,11 +48,11 @@ public class HexGrid : MonoBehaviour
 		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
 		position.y = y * HexMetrics.height;
 		position.z = z * (HexMetrics.outerRadius * 1.5f);
-
+		
+		HexCell.CellType type = DetermineCellType(position.x, position.y, position.z);
 		HexCell cell = cells[i] = _container.InstantiatePrefabForComponent<HexCell>(cellPrefab);
-
-		//HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
-		cell.isActive = true;
+		
+		cell.isActive = type != HexCell.CellType.Air;
 
 		AssignNeighbors(cell, x, y, z, size, i);
 
@@ -65,7 +66,21 @@ public class HexGrid : MonoBehaviour
 
 	}
 
-	private void AssignNeighbors(HexCell cell, int x, int y, int z, int size, int index)
+    private HexCell.CellType DetermineCellType(float x, float y, float z)
+    {
+		float noiseValue = Noise.CalcPixel3D((int)x, (int)y, (int)z, 0.1f);
+
+		float threshold = 125f; // The threshold for determining solid/air
+
+		//Debug.Log(noiseValue);
+
+		if (noiseValue > threshold)
+			return HexCell.CellType.Grass; // Solid voxel
+		else
+			return HexCell.CellType.Air; // Air voxel
+	}
+
+    private void AssignNeighbors(HexCell cell, int x, int y, int z, int size, int index)
     {
 		if (x > 0)
 		{

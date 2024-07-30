@@ -2,21 +2,19 @@ using UnityEngine;
 
 public class HexCell : MonoBehaviour
 {
-
     public AxialCoordinate coordinates;
-    public Vector3 position;
-    public Color color;
     public bool isActive;
+    public CellType type; 
 
     [SerializeField]
     HexCell[] neighbors;
-
-    public HexCell(Vector3 position, Color color, bool isActive = true)
+    
+    public HexCell(CellType type, bool isActive = true)
     {
-        this.position = position;
-        this.color = color;
         this.isActive = isActive;
+        this.type = type;
     }
+
     public HexCell GetNeighbor(int index)
     {
         return neighbors[index];
@@ -31,5 +29,13 @@ public class HexCell : MonoBehaviour
     {
         neighbors[(int)direction] = cell;
         cell.neighbors[(int)direction.Opposite()] = this;
+    }
+
+    public enum CellType
+    {
+        Air,    // Represents empty space
+        Grass,  // Represents grass block
+        Stone,  // Represents stone block
+                // Add more types as needed
     }
 }
