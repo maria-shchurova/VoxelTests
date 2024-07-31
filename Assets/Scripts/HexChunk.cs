@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HexChunk : MonoBehaviour
 {
 	public int size;
+	public HexChunk[] neighbors = new HexChunk[6];
 	public HexCell[] cells;
 	public Dictionary<Vector3, HexCell> cellsByCoordinates;
 
@@ -103,4 +105,18 @@ public class HexChunk : MonoBehaviour
 			}
 		}
 	}
+
+	public void SetNeighbor(int direction, HexChunk neighbor)
+	{
+		neighbors[direction] = neighbor;
+	}
+
+	/* neighbors:
+	  0: +x (right)
+	  1: -x (left)
+	  2: +y (up)
+	  3: -y (down)
+	  4: +z (forward)
+	  5: -z (backward)
+	 */
 }
