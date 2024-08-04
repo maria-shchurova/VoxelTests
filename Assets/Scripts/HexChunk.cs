@@ -44,24 +44,25 @@ public class HexChunk : MonoBehaviour
 
 	private void CreateCell(int x, int y,int z, int i)
 	{
-		Vector3 position;
-		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
-		position.y = y * HexMetrics.height;
-		position.z = z * (HexMetrics.outerRadius * 1.5f);
+		Vector3 localPosition;
+		localPosition.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
+		localPosition.y = y * HexMetrics.height;
+		localPosition.z = z * (HexMetrics.outerRadius * 1.5f);
 
-		Vector3 worldPos = transform.position + new Vector3(x, y, z);
+		// World coordinates for noise sampling
+		Vector3 worldPos = transform.position + localPosition;
 
-		//HexCell.CellType type = DetermineCellType(worldPos.x, worldPos.y, worldPos.z);
+		HexCell.CellType type = DetermineCellType(worldPos.x, worldPos.y, worldPos.z);
 
-		var cellGO = new GameObject($"cell {position.x}_{position.y}_{position.z}");
+		var cellGO = new GameObject($"cell {localPosition.x}_{localPosition.y}_{localPosition.z}");
 
 		HexCell cell = cells[i] = cellGO.AddComponent<HexCell>();
 
-		//cell.isActive = type != HexCell.CellType.Air;
-		cell.isActive = true;
+		cell.isActive = type != HexCell.CellType.Air;
+		//cell.isActive = true;
 
 		cell.transform.SetParent(transform, false);
-		cell.transform.localPosition = position;
+		cell.transform.localPosition = localPosition;
 		AssignNeighbors(cell, x, y, z, size, i);
 
 		cellsByCoordinates.Add(cell.transform.localPosition, cell);

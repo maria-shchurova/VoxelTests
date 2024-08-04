@@ -18,6 +18,7 @@ public class World : MonoBehaviour
     public static World Instance { get; private set; }
 
     public Material baseMaterial;
+    public bool autoUpdate;
 
     void Start()
     {
@@ -39,7 +40,7 @@ public class World : MonoBehaviour
         AssignChunkNeighbors();
     }
 
-    private void GenerateWorld()
+    public void GenerateWorld()
     {
         hexChunkGrid = new HexChunk[worldSize, worldSize, worldSize];
 
