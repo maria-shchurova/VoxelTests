@@ -36,7 +36,6 @@ public class World : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Optional: if you want this to persist across scenes
         }
         else
         {
@@ -49,6 +48,11 @@ public class World : MonoBehaviour
 
     public void GenerateWorld()
     {
+        foreach(Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         noiseArray = SLNoise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
 
         chunks = new Dictionary<Vector3, HexChunk>();

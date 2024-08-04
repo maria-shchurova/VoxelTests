@@ -70,8 +70,8 @@ public class HexChunk : MonoBehaviour
     private HexCell.CellType DetermineCellType(float x, float y, float z)
     {
 		float noiseValue = GlobalNoise.GetGlobalNoiseValue(x, z, World.Instance.noiseArray);
-		float normalizedNoiseValue = (noiseValue + 1) / 2;
-		float maxHeight = normalizedNoiseValue * World.Instance.maxHeight;
+		//float normalizedNoiseValue = (noiseValue + 1) / 2;
+		float maxHeight = noiseValue * World.Instance.maxHeight;
 
 		if (y <= maxHeight)
 			return HexCell.CellType.Grass; // Solid voxel
