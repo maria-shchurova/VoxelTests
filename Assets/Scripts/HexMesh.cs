@@ -67,7 +67,7 @@ public class HexMesh : MonoBehaviour
 		if (IsCellHiddenInChunk( center.x, center.y, center.z))
         {
 			Debug.Log(hexCell.gameObject.name + " is hidden in chunk");
-			return;
+			//return; does not work well
         }
 
 		for (int i = 0; i < 6; i++)

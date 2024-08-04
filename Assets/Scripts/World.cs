@@ -10,10 +10,22 @@ public class World : MonoBehaviour
     private HexChunk[,,] hexChunkGrid;
     private Dictionary<Vector3, HexChunk> chunks;
 
-    public int noiseSeed = 1234;
-    public float maxHeight = 0.2f;
-    public float noiseScale = 0.015f;
+    public int mapWidth;
+    public int mapHeight;
+    public float noiseScale;
+    public float maxHeight;
+
+    public int octaves;
+    [Range(0, 1)]
+    public float persistance;
+    public float lacunarity;
+
+    public int seed;
+    public Vector2 offset;
+
     public float[,] noiseArray;
+
+    public bool autoUpdate;
 
     public static World Instance { get; private set; }
 
@@ -31,16 +43,15 @@ public class World : MonoBehaviour
             Destroy(gameObject);
         }
 
-        noiseArray = GlobalNoise.GetNoise();
-
-        chunks = new Dictionary<Vector3, HexChunk>();
-
         GenerateWorld();
         AssignChunkNeighbors();
     }
 
-    private void GenerateWorld()
+    public void GenerateWorld()
     {
+        noiseArray = SLNoise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
+
+        chunks = new Dictionary<Vector3, HexChunk>();
         hexChunkGrid = new HexChunk[worldSize, worldSize, worldSize];
 
         for (int x = 0; x < worldSize; x++)
@@ -68,6 +79,8 @@ public class World : MonoBehaviour
             }
         }
     }
+
+
 
     private void AssignChunkNeighbors()
     {

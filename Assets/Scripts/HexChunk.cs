@@ -51,14 +51,14 @@ public class HexChunk : MonoBehaviour
 
 		Vector3 worldPos = transform.position + new Vector3(x, y, z);
 
-		//HexCell.CellType type = DetermineCellType(worldPos.x, worldPos.y, worldPos.z);
+		HexCell.CellType type = DetermineCellType(worldPos.x, worldPos.y, worldPos.z);
 
 		var cellGO = new GameObject($"cell {position.x}_{position.y}_{position.z}");
 
 		HexCell cell = cells[i] = cellGO.AddComponent<HexCell>();
 
-		//cell.isActive = type != HexCell.CellType.Air;
-		cell.isActive = true;
+		cell.isActive = type != HexCell.CellType.Air;
+		//cell.isActive = true;
 
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
@@ -78,6 +78,7 @@ public class HexChunk : MonoBehaviour
 		else
 			return HexCell.CellType.Air; // Air voxel
 	}
+
 
     private void AssignNeighbors(HexCell cell, int x, int y, int z, int size, int index)
     {
