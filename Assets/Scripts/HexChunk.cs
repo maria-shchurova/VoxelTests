@@ -49,7 +49,7 @@ public class HexChunk : MonoBehaviour
 		position.y = y * HexMetrics.height;
 		position.z = z * (HexMetrics.outerRadius * 1.5f);
 
-		Vector3 worldPos = transform.position + new Vector3(x, y, z);
+		Vector3 worldPos = transform.position + position;
 
 		HexCell.CellType type = DetermineCellType(worldPos.x, worldPos.y, worldPos.z);
 
