@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Jobs;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class HexChunk : MonoBehaviour
@@ -8,26 +11,41 @@ public class HexChunk : MonoBehaviour
 	public HexChunk[] neighbors = new HexChunk[6];
 	public HexCell[] cells;
 	public Dictionary<Vector3, HexCell> cellsByCoordinates;
-
+	public NativeArray<float3> hexCellPositionsAray;
+	public NativeArray<int3> hexCellGridPosition;
 	public Vector3 Bounds;
 
-	public void Initialize(int size, HexMesh mesh)
+
+    private void OnDestroy()
+    {
+		hexCellPositionsAray.Dispose();
+		hexCellGridPosition.Dispose();
+
+	}
+
+    public void Initialize(int size, HexMesh mesh)
 	{
 		this.size = size;
 
 		cellsByCoordinates = new Dictionary<Vector3, HexCell>();
-
+		hexCellPositionsAray = new NativeArray<float3>(size * size * size, Allocator.Persistent);
+		hexCellGridPosition = new NativeArray<int3>(size *size * size, Allocator.Persistent);
 		cells = new HexCell[size * size * size];
 
-		for (int z = 0, i = 0; z < size; z++)
+		CreateCellsJob createJob = new CreateCellsJob
+        {
+			HexCellGridPosition = hexCellGridPosition,
+			HexCellPositionsAray = hexCellPositionsAray,
+			Size = size
+		};
+
+		JobHandle createHandle = createJob.Schedule();
+		createHandle.Complete();
+
+		for (int i = 0; i < hexCellPositionsAray.Length; i++)
 		{
-			for (int y = 0; y < size; y++)
-			{
-				for (int x = 0; x < size; x++)
-				{
-					CreateCell(x, y, z, i++);
-				}
-			}
+			Vector3 position = new Vector3(hexCellPositionsAray[i].x, hexCellPositionsAray[i].y, hexCellPositionsAray[i].z);
+			CreateCell(position, i);
 		}
 
 		Bounds = new Vector3()
@@ -42,13 +60,8 @@ public class HexChunk : MonoBehaviour
 	}
 
 
-	private void CreateCell(int x, int y,int z, int i)
+	private void CreateCell(Vector3 position, int i)
 	{
-		Vector3 position;
-		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
-		position.y = y * HexMetrics.height;
-		position.z = z * (HexMetrics.outerRadius * 1.5f);
-
 		Vector3 worldPos = transform.position + position;
 
 		HexCell.CellType type = DetermineCellType(worldPos.x, worldPos.y, worldPos.z);
@@ -62,7 +75,12 @@ public class HexChunk : MonoBehaviour
 
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
-		AssignNeighbors(cell, x, y, z, size, i);
+		AssignNeighbors(
+			cell, 
+			hexCellGridPosition[i].x,
+			hexCellGridPosition[i].y,
+			hexCellGridPosition[i].z,
+			size, i);
 
 		cellsByCoordinates.Add(cell.transform.localPosition, cell);
 	}
