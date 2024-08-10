@@ -44,17 +44,16 @@ public class HexChunk : MonoBehaviour
 
 	private void CreateCell(int x, int y,int z, int i)
 	{
-		Vector3 localPosition;
-		localPosition.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
-		localPosition.y = y * HexMetrics.height;
-		localPosition.z = z * (HexMetrics.outerRadius * 1.5f);
+		Vector3 position;
+		position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
+		position.y = y * HexMetrics.height;
+		position.z = z * (HexMetrics.outerRadius * 1.5f);
 
-		// World coordinates for noise sampling
-		Vector3 worldPos = transform.position + localPosition;
+		Vector3 worldPos = transform.position + position;
 
 		HexCell.CellType type = DetermineCellType(worldPos.x, worldPos.y, worldPos.z);
 
-		var cellGO = new GameObject($"cell {localPosition.x}_{localPosition.y}_{localPosition.z}");
+		var cellGO = new GameObject($"cell {position.x}_{position.y}_{position.z}");
 
 		HexCell cell = cells[i] = cellGO.AddComponent<HexCell>();
 
@@ -62,7 +61,7 @@ public class HexChunk : MonoBehaviour
 		//cell.isActive = true;
 
 		cell.transform.SetParent(transform, false);
-		cell.transform.localPosition = localPosition;
+		cell.transform.localPosition = position;
 		AssignNeighbors(cell, x, y, z, size, i);
 
 		cellsByCoordinates.Add(cell.transform.localPosition, cell);
@@ -71,14 +70,15 @@ public class HexChunk : MonoBehaviour
     private HexCell.CellType DetermineCellType(float x, float y, float z)
     {
 		float noiseValue = GlobalNoise.GetGlobalNoiseValue(x, z, World.Instance.noiseArray);
-		float normalizedNoiseValue = (noiseValue + 1) / 2;
-		float maxHeight = normalizedNoiseValue * World.Instance.maxHeight;
+		//float normalizedNoiseValue = (noiseValue + 1) / 2;
+		float maxHeight = noiseValue * World.Instance.maxHeight;
 
 		if (y <= maxHeight)
 			return HexCell.CellType.Grass; // Solid voxel
 		else
 			return HexCell.CellType.Air; // Air voxel
 	}
+
 
     private void AssignNeighbors(HexCell cell, int x, int y, int z, int size, int index)
     {

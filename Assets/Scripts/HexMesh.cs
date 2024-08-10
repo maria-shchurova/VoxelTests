@@ -64,6 +64,12 @@ public class HexMesh : MonoBehaviour
 		Vector3 center = hexCell.transform.localPosition;
 		Vector3 centerTop = hexCell.transform.localPosition + new Vector3(0, HexMetrics.height, 0);
 
+		//if (IsCellHiddenInChunk( center.x, center.y, center.z))
+  //      {
+		//	Debug.Log(hexCell.gameObject.name + " is hidden in chunk");
+		//	//return; does not work well
+  //      }
+
 		for (int i = 0; i < 6; i++)
 		{
 
