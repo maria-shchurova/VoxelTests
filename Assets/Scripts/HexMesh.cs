@@ -61,8 +61,8 @@ public class HexMesh : MonoBehaviour
 
 	private void Triangulate(HexCell hexCell)
     {
-		Vector3 center = hexCell.transform.localPosition;
-		Vector3 centerTop = hexCell.transform.localPosition + new Vector3(0, HexMetrics.height, 0);
+		Vector3 center = hexCell.position;
+		Vector3 centerTop = hexCell.position + new Vector3(0, HexMetrics.height, 0);
 
 		//if (IsCellHiddenInChunk( center.x, center.y, center.z))
   //      {

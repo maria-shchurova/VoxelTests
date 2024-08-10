@@ -1,22 +1,18 @@
 using UnityEngine;
 
-public class HexCell : MonoBehaviour
+public class HexCell 
 {
-    public AxialCoordinate coordinates;
+    public Vector3 position;
     public bool isActive;
     public CellType type; 
 
     public HexCell[] neighbors;
 
-    private void Awake()
-    {
-        neighbors = new HexCell[6];
-    }
-
     public HexCell(CellType type, bool isActive = true)
     {
         this.isActive = isActive;
         this.type = type;
+        neighbors = new HexCell[6];
     }
 
     public HexCell GetNeighbor(int index)

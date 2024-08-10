@@ -39,7 +39,6 @@ public class InteractionHandling : MonoBehaviour
 		{
             if (GetCellAtWorldPosition(hit.point) != null)
             {
-                Debug.Log("Clicked on cell " + GetCellAtWorldPosition(hit.point).name);
 				TouchCell(GetCellAtWorldPosition(hit.point));
             }
             else
