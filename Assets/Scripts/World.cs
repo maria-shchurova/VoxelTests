@@ -30,7 +30,6 @@ public class World : MonoBehaviour
     public static World Instance { get; private set; }
 
     public Material baseMaterial;
-    public bool autoUpdate;
 
     void Start()
     {
