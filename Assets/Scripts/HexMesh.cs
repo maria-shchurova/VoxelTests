@@ -8,13 +8,13 @@ public class HexMesh : MonoBehaviour
 
 	private HexChunk hexGrid;
 	private MeshFilter hexMeshFilter;
-	private MeshCollider collider;
+	//private MeshCollider collider;
 
 	public void Initialize(HexChunk grid)
 	{
 		hexGrid = grid;
 		hexMeshFilter = GetComponent<MeshFilter>();
-		collider = GetComponent<MeshCollider>();
+		//collider = GetComponent<MeshCollider>();
 
 		hexMeshFilter.mesh = new Mesh();
 		hexMeshFilter.mesh.name = "Hex Mesh";
@@ -56,7 +56,7 @@ public class HexMesh : MonoBehaviour
 		hexMeshFilter.mesh.vertices = vertices.ToArray();
 		hexMeshFilter.mesh.triangles = triangles.ToArray();
 		hexMeshFilter.mesh.RecalculateNormals();
-		collider.sharedMesh = GetComponent<MeshFilter>().mesh;
+		//collider.sharedMesh = GetComponent<MeshFilter>().mesh;
 	}
 
 	private void Triangulate(HexCell hexCell)
