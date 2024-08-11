@@ -66,8 +66,8 @@ public class HexChunk : MonoBehaviour
 
 		HexCell.CellType type = DetermineCellType(worldPos.x, worldPos.y, worldPos.z);
 
-		//cells[i] = new HexCell(type, type != HexCell.CellType.Air);
-		cells[i] = new HexCell(type, true);
+		cells[i] = new HexCell(type, type != HexCell.CellType.Air);
+		//cells[i] = new HexCell(type, true);
 
 		cells[i].position = position;
 		cellsByCoordinates.Add(position, cells[i]);

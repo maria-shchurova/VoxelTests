@@ -310,7 +310,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9d39b5908d51c448bb86a8582b1ff28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hexCellPrefab: {fileID: 8748403415035865539, guid: 53ca23f62edeff441be7cee5ada846ac, type: 3}
   terrainGeneator: {fileID: 687800225}
 --- !u!114 &687800225
 MonoBehaviour:
@@ -324,12 +323,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68f80e711ab834e4e916c3f5aad7697c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GenerateFroHeightmap: 1
+  Heightmap: {fileID: 2800000, guid: 58d6a3fc1abd8074fbe02b7899de7165, type: 3}
   worldSize: 8
-  chunkSize: 8
+  chunkSize: 16
   mapWidth: 90
   mapHeight: 90
-  noiseScale: 25
-  maxHeight: 10
+  noiseScale: 1
+  maxHeight: 140
   octaves: 5
   persistance: 0.5
   lacunarity: 2

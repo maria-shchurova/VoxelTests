@@ -5,23 +5,33 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
-    public NativeArray<float3> hexChunkPosiitonsArray;
+    private NativeArray<float3> hexChunkPosiitonsArray;
+    public bool GenerateFroHeightmap;
 
-    public int worldSize = 5; 
-    public int chunkSize = 16;
-
-    public int mapWidth;
-    public int mapHeight;
-    public float noiseScale;
+    [SerializeField]
+    private Texture2D Heightmap;
+    [SerializeField]
+    private int worldSize = 5;
+    [SerializeField]
+    private int chunkSize = 16;
+    [SerializeField]
+    private int mapWidth;
+    [SerializeField]
+    private int mapHeight;
+    [SerializeField]
+    private float noiseScale;
     public float maxHeight;
-
-    public int octaves;
+    [SerializeField]
+    private int octaves;
+    [SerializeField]
     [Range(0, 1)]
-    public float persistance;
-    public float lacunarity;
-
-    public int seed;
-    public Vector2 offset;
+    private float persistance;
+    [SerializeField]
+    private float lacunarity;
+    [SerializeField]
+    private int seed;
+    [SerializeField]
+    private Vector2 offset;
 
     public float[,] noiseArray;
 
@@ -60,7 +70,17 @@ public class World : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        noiseArray = SLNoise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
+        if(GenerateFroHeightmap)
+        {
+            if (Heightmap == null)
+                return;
+            noiseArray = NoiseFromTexture.Convert(Heightmap);
+        }
+        else
+        {
+            noiseArray = SLNoise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
+        }
+
         hexChunkPosiitonsArray = new NativeArray<float3>(worldSize * worldSize * worldSize, Allocator.Persistent);
 
         CreateChunksJob createJob = new CreateChunksJob
