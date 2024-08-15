@@ -7,13 +7,13 @@ public class HexMesh : MonoBehaviour
 	List<int> triangles;
 
 	private HexChunk hexGrid;
+	[SerializeField]
 	private MeshFilter hexMeshFilter;
 	//private MeshCollider collider;
 
 	public void Initialize(HexChunk grid)
 	{
 		hexGrid = grid;
-		hexMeshFilter = GetComponent<MeshFilter>();
 		//collider = GetComponent<MeshCollider>();
 
 		hexMeshFilter.mesh = new Mesh();
@@ -33,11 +33,11 @@ public class HexMesh : MonoBehaviour
         hexMeshFilter.mesh.triangles = new int[0];
         hexMeshFilter.mesh.normals = new Vector3[0];
 
-        if (hexMeshFilter.mesh.vertices.Length > 0)
-        {
-            hexMeshFilter.mesh.UploadMeshData(true);
-            hexMeshFilter.mesh.RecalculateNormals();
-        }
+        //if (hexMeshFilter.mesh.vertices.Length > 0)
+        //{
+        //    hexMeshFilter.mesh.UploadMeshData(true);
+        //    hexMeshFilter.mesh.RecalculateNormals();
+        //}
     }
 
 	public void Triangulate(HexCell[] cells)
@@ -127,7 +127,7 @@ public class HexMesh : MonoBehaviour
 	private bool IsFaceVisible(Vector3 direction)
 	{
 		HexCell neighbour;
-		hexGrid.cellsByCoordinates.TryGetValue(direction, out neighbour);
+		hexGrid.cellsByCoordinates.TryGetValue(direction, out neighbour);//todo remove this - expensive call
 
 		if (neighbour != null)
 			return neighbour.isActive;

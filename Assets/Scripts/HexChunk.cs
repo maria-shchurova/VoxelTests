@@ -15,6 +15,8 @@ public class HexChunk : MonoBehaviour
 	public NativeArray<int3> hexCellGridPosition;
 	public Vector3 Bounds;
 
+	[SerializeField]
+	private HexMesh mesh;
 
     private void OnDestroy()
     {
@@ -22,10 +24,10 @@ public class HexChunk : MonoBehaviour
 		hexCellGridPosition.Dispose();
 
 	}
-
-    public void Initialize(int size, HexMesh mesh)
+	public void Initialize()
+    //void Start()
 	{
-		this.size = size;
+		this.size = World.Instance.chunkSize;
 
 		cellsByCoordinates = new Dictionary<Vector3, HexCell>();
 		hexCellPositionsAray = new NativeArray<float3>(size * size * size, Allocator.Persistent);

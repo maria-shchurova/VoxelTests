@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject ChunkPrefab;
     private NativeArray<float3> hexChunkPosiitonsArray;
     public bool GenerateFroHeightmap;
 
@@ -12,8 +14,7 @@ public class World : MonoBehaviour
     private Texture2D Heightmap;
     [SerializeField]
     private int worldSize = 5;
-    [SerializeField]
-    private int chunkSize = 16;
+    public int chunkSize = 16;
     [SerializeField]
     private int mapWidth;
     [SerializeField]
@@ -66,10 +67,7 @@ public class World : MonoBehaviour
 
     public void GenerateWorld()
     {
-        foreach(Transform child in transform)
-        {
-            Destroy(child.gameObject);
-        }
+
         if(GenerateFroHeightmap)
         {
             if (Heightmap == null)
@@ -93,20 +91,12 @@ public class World : MonoBehaviour
         JobHandle createHandle = createJob.Schedule();
         createHandle.Complete();
 
-        foreach(float3 position in hexChunkPosiitonsArray)
+        for(int i = 0; i < hexChunkPosiitonsArray.Length; i++)
         {
-            GameObject newChunkObject = new GameObject($"Chunk_{position.x}_{position.y}_{position.z}");
-            newChunkObject.transform.position = new Vector3(position.x, position.y, position.z);
-            newChunkObject.transform.parent = this.transform;
-            HexChunk newChunk = newChunkObject.AddComponent<HexChunk>();
-            HexMesh chunkMesh = newChunkObject.AddComponent<HexMesh>();
-            //newChunkObject.AddComponent<MeshCollider>();
-            newChunkObject.AddComponent<MeshFilter>();
-            newChunkObject.AddComponent<MeshRenderer>().material = baseMaterial;
-
-            newChunk.Initialize(chunkSize, chunkMesh);
+            GameObject newChunkObject = Instantiate(ChunkPrefab, transform);
+            newChunkObject.transform.position = new Vector3(hexChunkPosiitonsArray[i].x, hexChunkPosiitonsArray[i].y, hexChunkPosiitonsArray[i].z);
+            newChunkObject.GetComponent<HexChunk>().Initialize();
         }
-
     }
 
     public void OnDestroy()

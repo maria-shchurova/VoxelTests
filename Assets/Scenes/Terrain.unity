@@ -208,8 +208,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 64173967}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.008456606, y: -0.94017494, z: 0.02341247, w: 0.33978155}
-  m_LocalPosition: {x: 51.788208, y: 11.571764, z: 36.829067}
+  m_LocalRotation: {x: 0.0049779788, y: 0.9549359, z: -0.29633653, w: 0.01604116}
+  m_LocalPosition: {x: 5.9164276, y: 15.834564, z: 22.472305}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -323,14 +323,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68f80e711ab834e4e916c3f5aad7697c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GenerateFroHeightmap: 1
-  Heightmap: {fileID: 2800000, guid: 58d6a3fc1abd8074fbe02b7899de7165, type: 3}
-  worldSize: 8
-  chunkSize: 16
+  ChunkPrefab: {fileID: 457060951820036736, guid: 4a68e3d5499fcf4478de17702d9436f6, type: 3}
+  GenerateFroHeightmap: 0
+  Heightmap: {fileID: 2800000, guid: fe9234d4264b92246afdba2bd312672a, type: 3}
+  worldSize: 2
+  chunkSize: 4
   mapWidth: 90
   mapHeight: 90
-  noiseScale: 1
-  maxHeight: 140
+  noiseScale: 15
+  maxHeight: 10
   octaves: 5
   persistance: 0.5
   lacunarity: 2
