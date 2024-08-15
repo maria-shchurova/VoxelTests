@@ -7,12 +7,14 @@ public class HexCell
     public CellType type; 
 
     public HexCell[] neighbors;
+    public HexCell neighborUp;
+    public HexCell neighborDown;
 
     public HexCell(CellType type, bool isActive = true)
     {
         this.isActive = isActive;
         this.type = type;
-        neighbors = new HexCell[6];
+        neighbors = new HexCell[6]; 
     }
 
     public HexCell GetNeighbor(int index)

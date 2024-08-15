@@ -67,7 +67,7 @@ public class HexMesh : MonoBehaviour
 		for (int i = 0; i < 6; i++)
 		{
 
-			if(!IsFaceVisible(center + Vector3.up)) //if neighboring on above cell is NOT active
+			if(hexCell.neighborUp == null || !hexCell.neighborUp.isActive) 
             {
 				// Top face
 				AddTriangle(
@@ -77,7 +77,7 @@ public class HexMesh : MonoBehaviour
 				);
 			}
 
-			if (!IsFaceVisible(center + Vector3.down)) //if neighboring below cell is NOT active
+			if (hexCell.neighborDown == null || !hexCell.neighborDown.isActive) 
             {
 				// Bottom face
 				AddTriangle(
@@ -122,17 +122,6 @@ public class HexMesh : MonoBehaviour
 		triangles.Add(vertexIndex);
 		triangles.Add(vertexIndex + 1);
 		triangles.Add(vertexIndex + 2);
-	}
-
-	private bool IsFaceVisible(Vector3 direction)
-	{
-		HexCell neighbour;
-		hexGrid.cellsByCoordinates.TryGetValue(direction, out neighbour);//todo remove this - expensive call
-
-		if (neighbour != null)
-			return neighbour.isActive;
-		else
-			return false;
 	}
 
 }

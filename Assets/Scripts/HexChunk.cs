@@ -56,7 +56,7 @@ public class HexChunk : MonoBehaviour
 			y = transform.position.y * size * HexMetrics.height,
 			z = transform.position.z * (HexMetrics.outerRadius * size * 1.5f)
 		};
-
+		AssignUpperNeighbors();
 		mesh.Initialize(this);
 		mesh.Triangulate(cells);
 	}
@@ -72,7 +72,7 @@ public class HexChunk : MonoBehaviour
 		//cells[i] = new HexCell(type, true);
 
 		cells[i].position = position;
-		cellsByCoordinates.Add(position, cells[i]);
+		//cellsByCoordinates.Add(position, cells[i]);
 
 		AssignNeighbors(
 			cells[i], 
@@ -121,8 +121,23 @@ public class HexChunk : MonoBehaviour
 				}
 			}
 		}
-	}
 
+		if (y > 0)
+		{
+			cell.neighborDown = cells[index - size]; 
+		}
+	}
+	void AssignUpperNeighbors()
+	{
+		for (int i = 0; i < cells.Length; i++)
+		{
+			if (hexCellGridPosition[i].y < size - 1)
+			{
+				cells[i].neighborUp = cells[i + size];
+			}
+		}
+
+	}
 	public void SetNeighbor(int direction, HexChunk neighbor)
 	{
 		neighbors[direction] = neighbor;

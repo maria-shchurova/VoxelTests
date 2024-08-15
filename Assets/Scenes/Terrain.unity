@@ -325,9 +325,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChunkPrefab: {fileID: 457060951820036736, guid: 4a68e3d5499fcf4478de17702d9436f6, type: 3}
   GenerateFroHeightmap: 0
-  Heightmap: {fileID: 2800000, guid: fe9234d4264b92246afdba2bd312672a, type: 3}
-  worldSize: 2
-  chunkSize: 4
+  Heightmap: {fileID: 0}
+  worldSize: 8
+  chunkSize: 16
   mapWidth: 90
   mapHeight: 90
   noiseScale: 15
