@@ -57,7 +57,7 @@ public class HexChunk : MonoBehaviour
 			z = transform.position.z * (HexMetrics.outerRadius * size * 1.5f)
 		};
 		AssignUpperNeighbors();
-		mesh.Initialize(this);
+		mesh.Initialize();
 		mesh.Triangulate(cells);
 	}
 

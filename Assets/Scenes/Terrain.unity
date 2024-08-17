@@ -327,7 +327,7 @@ MonoBehaviour:
   GenerateFroHeightmap: 0
   Heightmap: {fileID: 0}
   worldSize: 8
-  chunkSize: 16
+  chunkSize: 8
   mapWidth: 90
   mapHeight: 90
   noiseScale: 15

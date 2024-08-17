@@ -1,29 +1,31 @@
 using UnityEngine;
+using Unity.Collections;
+using Unity.Jobs;
+using Unity.Mathematics;
 
 public class HexMesh : MonoBehaviour
 {
-    private Vector3[] vertices;
-    private int[] triangles;
+    private NativeArray<float3> vertices;
+    private int[] triangles; //private NativeArray<int>
 
     private int vertexIndex = 0;
     private int triangleIndex = 0;
 
-    private HexChunk hexGrid;
     [SerializeField]
     private MeshFilter hexMeshFilter;
 
-    public void Initialize(HexChunk grid)
+    public void Initialize()
     {
-        hexGrid = grid;
+        int chunkSize = World.Instance.chunkSize;
 
         hexMeshFilter.mesh = new Mesh();
         hexMeshFilter.mesh.name = "Hex Mesh";
 
         // Predefine sizes (estimate based on grid size)
-        int maxVertices = grid.size * grid.size * grid.size * 6 * 4; // Estimate based on the number of hex cells
+        int maxVertices = chunkSize * chunkSize * chunkSize * 12; 
         int maxTriangles = maxVertices * 3; // Estimate based on the number of faces
 
-        vertices = new Vector3[maxVertices];
+        vertices = new NativeArray<float3>(maxVertices, Allocator.Persistent);
         triangles = new int[maxTriangles];
     }
 
@@ -34,7 +36,8 @@ public class HexMesh : MonoBehaviour
         // Reset indices and clear mesh data
         vertexIndex = 0;
         triangleIndex = 0;
-        vertices = new Vector3[vertices.Length]; // Reset the arrays
+        // Reset the arrays
+        vertices = new NativeArray<float3>(vertices.Length, Allocator.Persistent);
         triangles = new int[triangles.Length];
     }
 
@@ -50,15 +53,9 @@ public class HexMesh : MonoBehaviour
             }
         }
 
-        // Trim the arrays to only include used data
-        Vector3[] trimmedVertices = new Vector3[vertexIndex];
-        int[] trimmedTriangles = new int[triangleIndex];
 
-        System.Array.Copy(vertices, trimmedVertices, vertexIndex);
-        System.Array.Copy(triangles, trimmedTriangles, triangleIndex);
-
-        hexMeshFilter.mesh.vertices = trimmedVertices;
-        hexMeshFilter.mesh.triangles = trimmedTriangles;
+        hexMeshFilter.mesh.vertices = vertices.ToVector3Array();
+        hexMeshFilter.mesh.triangles = triangles;
         hexMeshFilter.mesh.RecalculateNormals();
     }
 
