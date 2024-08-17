@@ -137,6 +137,7 @@ public class HexChunk : MonoBehaviour
 			if (hexCellGridPosition[i].y < size - 1)
 			{
 				cells[i].neighborUp = cells[i + size];
+				cells[i].SetBitmaskNeighbor(BitmaskNeighbors.TOP, cells[i + size]);
 			}
 		}
 

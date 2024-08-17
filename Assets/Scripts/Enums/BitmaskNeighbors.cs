@@ -11,5 +11,7 @@ public enum BitmaskNeighbors
     SW = 16, //00010000
     W = 32,  //00100000
     NW = 64, //01000000
-    All = NE | E | SE | S | SW | W | NW //01111111
+    TOP = 128,
+    BOTTOM = 256,
+    All = NE | E | SE | S | SW | W | NW | TOP | BOTTOM
 }

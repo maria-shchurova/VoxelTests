@@ -67,7 +67,7 @@ public class HexMesh : MonoBehaviour
 		for (int i = 0; i < 6; i++)
 		{
 
-			if(hexCell.neighborUp == null || !hexCell.neighborUp.isActive) 
+			if((hexCell.neighborsBitmask & GetDirectionBitmask(6)) == 0) 
             {
 				// Top face
 				AddTriangle(
@@ -77,7 +77,7 @@ public class HexMesh : MonoBehaviour
 				);
 			}
 
-			if (hexCell.neighborDown == null || !hexCell.neighborDown.isActive) 
+			if ((hexCell.neighborsBitmask & GetDirectionBitmask(7)) == 0) 
             {
 				// Bottom face
 				AddTriangle(
@@ -86,12 +86,6 @@ public class HexMesh : MonoBehaviour
 				center
 			);
 			}
-			// 0 face is NE
-			// 1 face is E
-			// 2 face is SE
-			// 3 face is SW
-			// 4 face is W
-			// 5 face is NW
 
 			// Check if the neighbor in this direction is inactive or absent using the bitmask
 			if ((hexCell.neighborsBitmask & GetDirectionBitmask(i)) == 0)
@@ -135,6 +129,8 @@ public class HexMesh : MonoBehaviour
 			case 3: return BitmaskNeighbors.SW;
 			case 4: return BitmaskNeighbors.W;
 			case 5: return BitmaskNeighbors.NW;
+			case 6: return BitmaskNeighbors.TOP;
+			case 7: return BitmaskNeighbors.BOTTOM;
 			default: return BitmaskNeighbors.None; // Shouldn't reach here
 		}
 	}

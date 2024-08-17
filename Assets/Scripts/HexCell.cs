@@ -77,6 +77,13 @@ public class HexCell
             case BitmaskNeighbors.NW:
                 return BitmaskNeighbors.SE;
                 break;
+            case BitmaskNeighbors.TOP:
+                return BitmaskNeighbors.BOTTOM;
+                break;
+            case BitmaskNeighbors.BOTTOM:
+                return BitmaskNeighbors.TOP;
+                break;
+
             default:
                 return BitmaskNeighbors.None;
 
