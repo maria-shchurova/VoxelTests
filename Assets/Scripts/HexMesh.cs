@@ -6,7 +6,7 @@ using Unity.Mathematics;
 public class HexMesh : MonoBehaviour
 {
     private NativeArray<float3> vertices;
-    private int[] triangles; //private NativeArray<int>
+    private NativeArray<int> triangles; 
 
     private int vertexIndex = 0;
     private int triangleIndex = 0;
@@ -26,7 +26,7 @@ public class HexMesh : MonoBehaviour
         int maxTriangles = maxVertices * 3; // Estimate based on the number of faces
 
         vertices = new NativeArray<float3>(maxVertices, Allocator.Persistent);
-        triangles = new int[maxTriangles];
+        triangles = new NativeArray<int>(maxTriangles, Allocator.Persistent);
     }
 
     public void Clear()
@@ -38,7 +38,7 @@ public class HexMesh : MonoBehaviour
         triangleIndex = 0;
         // Reset the arrays
         vertices = new NativeArray<float3>(vertices.Length, Allocator.Persistent);
-        triangles = new int[triangles.Length];
+        triangles = new NativeArray<int>(triangles.Length, Allocator.Persistent);
     }
 
     public void Triangulate(HexCell[] cells)
@@ -55,7 +55,7 @@ public class HexMesh : MonoBehaviour
 
 
         hexMeshFilter.mesh.vertices = vertices.ToVector3Array();
-        hexMeshFilter.mesh.triangles = triangles;
+        hexMeshFilter.mesh.triangles = triangles.ToIntArray();
         hexMeshFilter.mesh.RecalculateNormals();
     }
 
@@ -124,5 +124,11 @@ public class HexMesh : MonoBehaviour
 
         vertexIndex += 3;
         triangleIndex += 3;
+    }
+
+    public void OnDestroy()
+    {
+        vertices.Dispose();
+        triangles.Dispose();
     }
 }

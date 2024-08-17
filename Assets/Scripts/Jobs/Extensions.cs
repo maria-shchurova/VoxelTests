@@ -17,4 +17,18 @@ public static class Extensions
 
         return vector3Array;
     }
+
+    public static int[] ToIntArray(this NativeArray<int> nativeIntArray)
+    {
+        if (nativeIntArray == null || nativeIntArray.Length == 0)
+            return new int[0];
+
+        int[] intArray = new int[nativeIntArray.Length];
+        for (int i = 0; i < nativeIntArray.Length; i++)
+        {
+            intArray[i] = nativeIntArray[i];
+        }
+
+        return intArray;
+    }
 }
