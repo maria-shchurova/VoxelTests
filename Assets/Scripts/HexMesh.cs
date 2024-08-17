@@ -93,8 +93,9 @@ public class HexMesh : MonoBehaviour
 			// 4 face is W
 			// 5 face is NW
 
-			if (hexCell.GetNeighbor(i) == null || !hexCell.GetNeighbor(i).isActive)
-            {
+			// Check if the neighbor in this direction is inactive or absent using the bitmask
+			if ((hexCell.neighborsBitmask & GetDirectionBitmask(i)) == 0)
+			{
 				// Side face 1
 				AddTriangle(
 					centerTop + HexMetrics.corners[i + 1],
@@ -110,7 +111,7 @@ public class HexMesh : MonoBehaviour
 				);
 			}
 
-        }
+		}
 	}
 
 	void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
@@ -122,6 +123,20 @@ public class HexMesh : MonoBehaviour
 		triangles.Add(vertexIndex);
 		triangles.Add(vertexIndex + 1);
 		triangles.Add(vertexIndex + 2);
+	}
+
+	private BitmaskNeighbors GetDirectionBitmask(int i)
+	{
+		switch (i)
+		{
+			case 0: return BitmaskNeighbors.NE;
+			case 1: return BitmaskNeighbors.E;
+			case 2: return BitmaskNeighbors.SE;
+			case 3: return BitmaskNeighbors.SW;
+			case 4: return BitmaskNeighbors.W;
+			case 5: return BitmaskNeighbors.NW;
+			default: return BitmaskNeighbors.None; // Shouldn't reach here
+		}
 	}
 
 }

@@ -95,38 +95,41 @@ public class HexChunk : MonoBehaviour
 			return HexCell.CellType.Air; // Air voxel
 	}
 
-
-    private void AssignNeighbors(HexCell cell, int x, int y, int z, int size, int index)
-    {
+	private void AssignNeighbors(HexCell cell, int x, int y, int z, int size, int index)
+	{
 		if (x > 0)
 		{
 			cell.SetNeighbor(HexDirection.W, cells[index - 1]);
+			cell.SetBitmaskNeighbor(BitmaskNeighbors.W, cells[index - 1]);
 		}
 		if (z > 0)
 		{
 			if ((z & 1) == 0)
 			{
 				cell.SetNeighbor(HexDirection.SE, cells[index - size * size]);
+				cell.SetBitmaskNeighbor(BitmaskNeighbors.SE, cells[index - size * size]);
+
 				if (x > 0)
 				{
 					cell.SetNeighbor(HexDirection.SW, cells[index - size * size - 1]);
+					cell.SetBitmaskNeighbor(BitmaskNeighbors.SW, cells[index - size * size - 1]);
 				}
 			}
 			else
 			{
 				cell.SetNeighbor(HexDirection.SW, cells[index - size * size]);
+				cell.SetBitmaskNeighbor(BitmaskNeighbors.SW, cells[index - size * size]);
+
 				if (x < size - 1)
 				{
 					cell.SetNeighbor(HexDirection.SE, cells[index - size * size + 1]);
+					cell.SetBitmaskNeighbor(BitmaskNeighbors.SE, cells[index - size * size + 1]);
+
 				}
 			}
 		}
-
-		if (y > 0)
-		{
-			cell.neighborDown = cells[index - size]; 
-		}
 	}
+
 	void AssignUpperNeighbors()
 	{
 		for (int i = 0; i < cells.Length; i++)
