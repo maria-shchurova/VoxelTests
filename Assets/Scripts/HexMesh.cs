@@ -74,6 +74,7 @@ public class HexMesh : MonoBehaviour
                     centerTop + HexMetrics.corners[i],
                     centerTop + HexMetrics.corners[i + 1]
                 );
+
             }
 
             if (hexCell.neighborDown == null || !hexCell.neighborDown.isActive)
@@ -107,20 +108,20 @@ public class HexMesh : MonoBehaviour
 
     void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
     {
-        // Check to ensure we don't exceed array limits
-        if (vertexIndex + 3 >= vertices.Length || triangleIndex + 3 >= triangles.Length)
+        var coordinates = new Vector3[] {v1, v2, v3}.ToNativeArrayFloat3(Allocator.Persistent); 
+
+        AddTriangleJob triangleJob = new AddTriangleJob
         {
-            Debug.LogError("HexMesh: Exceeded predefined array size. Increase the initial size estimate.");
-            return;
-        }
+            vertices = vertices,
+            triangles = triangles,
+            vertexIndex = vertexIndex,
+            triangleIndex = triangleIndex,
+            coordinates = coordinates
+        };
 
-        vertices[vertexIndex] = v1;
-        vertices[vertexIndex + 1] = v2;
-        vertices[vertexIndex + 2] = v3;
+        JobHandle triangleHandle = triangleJob.Schedule();
+        triangleHandle.Complete();
 
-        triangles[triangleIndex] = vertexIndex;
-        triangles[triangleIndex + 1] = vertexIndex + 1;
-        triangles[triangleIndex + 2] = vertexIndex + 2;
 
         vertexIndex += 3;
         triangleIndex += 3;

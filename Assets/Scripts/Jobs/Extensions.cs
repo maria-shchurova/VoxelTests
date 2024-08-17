@@ -31,4 +31,14 @@ public static class Extensions
 
         return intArray;
     }
+
+    public static NativeArray<float3> ToNativeArrayFloat3(this Vector3[] vector3Array, Allocator allocator)
+    {
+        NativeArray<float3> nativeArray = new NativeArray<float3>(vector3Array.Length, allocator, NativeArrayOptions.UninitializedMemory);
+        for (int i = 0; i < vector3Array.Length; i++)
+        {
+            nativeArray[i] = new float3(vector3Array[i].x, vector3Array[i].y, vector3Array[i].z);
+        }
+        return nativeArray;
+    }
 }
