@@ -1,13 +1,16 @@
-public enum HexDirection
+namespace Assets.Scripts
 {
-	NE, E, SE, SW, W, NW
-}
-
-public static class HexDirectionExtensions
-{
-
-	public static HexDirection Opposite(this HexDirection direction)
+	public enum HexDirection
 	{
-		return (int)direction < 3 ? (direction + 3) : (direction - 3);
+		NE, E, SE, SW, W, NW
+	}
+
+	public static class HexDirectionExtensions
+	{
+
+		public static HexDirection Opposite(this HexDirection direction)
+		{
+			return (int)direction < 3 ? (direction + 3) : (direction - 3);
+		}
 	}
 }

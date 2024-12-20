@@ -1,152 +1,151 @@
-using System;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class HexChunk : MonoBehaviour
+namespace Assets.Scripts
 {
-	public int size;
-	public HexChunk[] neighbors = new HexChunk[6];
-	public HexCell[] cells;
-	public Dictionary<Vector3, HexCell> cellsByCoordinates;
-	public NativeArray<float3> hexCellPositionsAray;
-	public NativeArray<int3> hexCellGridPosition;
-	public Vector3 Bounds;
-
-	[SerializeField]
-	private HexMesh mesh;
-
-    private void OnDestroy()
-    {
-		hexCellPositionsAray.Dispose();
-		hexCellGridPosition.Dispose();
-	}
-	public void Initialize()
-    //void Start()
+	public class HexChunk : MonoBehaviour
 	{
-		this.size = World.Instance.chunkSize;
+		public int size;
+		public HexChunk[] neighbors = new HexChunk[6];
+		public HexCell[] cells;
+		public Dictionary<Vector3, HexCell> cellsByCoordinates;
+		public NativeArray<float3> hexCellPositionsAray;
+		public NativeArray<int3> hexCellGridPosition;
+		public Vector3 Bounds;
 
-		cellsByCoordinates = new Dictionary<Vector3, HexCell>();
-		hexCellPositionsAray = new NativeArray<float3>(size * size * size, Allocator.Persistent);
-		hexCellGridPosition = new NativeArray<int3>(size *size * size, Allocator.Persistent);
-		cells = new HexCell[size * size * size];
+		[SerializeField]
+		private HexMesh mesh;
 
-		CreateCellsJob createJob = new CreateCellsJob
-        {
-			HexCellGridPosition = hexCellGridPosition,
-			HexCellPositionsAray = hexCellPositionsAray,
-			Size = size
-		};
-
-		JobHandle createHandle = createJob.Schedule();
-		createHandle.Complete();
-
-		for (int i = 0; i < hexCellPositionsAray.Length; i++)
+		private void OnDestroy()
 		{
-			Vector3 position = new Vector3(hexCellPositionsAray[i].x, hexCellPositionsAray[i].y, hexCellPositionsAray[i].z);
-			CreateCell(position, i);
+			hexCellPositionsAray.Dispose();
+			hexCellGridPosition.Dispose();
 		}
-
-		Bounds = new Vector3()
+		public void Initialize()
+			//void Start()
 		{
-			x = transform.position.x * (HexMetrics.innerRadius * size * 2),
-			y = transform.position.y * size * HexMetrics.height,
-			z = transform.position.z * (HexMetrics.outerRadius * size * 1.5f)
-		};
-		AssignUpperNeighbors();
-		mesh.Initialize();
-		mesh.Triangulate(cells);
-	}
+			this.size = World.Instance.chunkSize;
 
+			cellsByCoordinates = new Dictionary<Vector3, HexCell>();
+			hexCellPositionsAray = new NativeArray<float3>(size * size * size, Allocator.Persistent);
+			hexCellGridPosition = new NativeArray<int3>(size *size * size, Allocator.Persistent);
+			cells = new HexCell[size * size * size];
 
-	private void CreateCell(Vector3 position, int i)
-	{
-		Vector3 worldPos = transform.position + position;
-
-		HexCell.CellType type = DetermineCellType(worldPos.x, worldPos.y, worldPos.z);
-
-		cells[i] = new HexCell(type, type != HexCell.CellType.Air);
-		//cells[i] = new HexCell(type, true);
-
-		cells[i].position = position;
-		//cellsByCoordinates.Add(position, cells[i]);
-
-		AssignNeighbors(
-			cells[i], 
-			hexCellGridPosition[i].x,
-			hexCellGridPosition[i].y,
-			hexCellGridPosition[i].z,
-			size, i);
-
-	}
-
-    private HexCell.CellType DetermineCellType(float x, float y, float z)
-    {
-		float noiseValue = GlobalNoise.GetGlobalNoiseValue(x, z, World.Instance.noiseArray);
-		//float normalizedNoiseValue = (noiseValue + 1) / 2;
-		float maxHeight = noiseValue * World.Instance.maxHeight;
-
-		if (y <= maxHeight)
-			return HexCell.CellType.Grass; // Solid voxel
-		else
-			return HexCell.CellType.Air; // Air voxel
-	}
-
-	private void AssignNeighbors(HexCell cell, int x, int y, int z, int size, int index)
-	{
-		if (x > 0)
-		{
-			cell.SetNeighbor(HexDirection.W, cells[index - 1]);
-			cell.SetBitmaskNeighbor(BitmaskNeighbors.W, cells[index - 1]);
-		}
-		if (z > 0)
-		{
-			if ((z & 1) == 0)
+			CreateCellsJob createJob = new CreateCellsJob
 			{
-				cell.SetNeighbor(HexDirection.SE, cells[index - size * size]);
-				cell.SetBitmaskNeighbor(BitmaskNeighbors.SE, cells[index - size * size]);
+				HexCellGridPosition = hexCellGridPosition,
+				HexCellPositionsAray = hexCellPositionsAray,
+				Size = size
+			};
 
-				if (x > 0)
+			JobHandle createHandle = createJob.Schedule();
+			createHandle.Complete();
+
+			for (int i = 0; i < hexCellPositionsAray.Length; i++)
+			{
+				Vector3 position = new Vector3(hexCellPositionsAray[i].x, hexCellPositionsAray[i].y, hexCellPositionsAray[i].z);
+				CreateCell(position, i);
+			}
+
+			Bounds = new Vector3()
+			{
+				x = transform.position.x * (HexMetrics.innerRadius * size * 2),
+				y = transform.position.y * size * HexMetrics.height,
+				z = transform.position.z * (HexMetrics.outerRadius * size * 1.5f)
+			};
+			AssignUpperNeighbors();
+			mesh.Initialize();
+			mesh.Triangulate(cells);
+		}
+
+
+		private void CreateCell(Vector3 position, int i)
+		{
+			Vector3 worldPos = transform.position + position;
+
+			HexCell.CellType type = DetermineCellType(worldPos.x, worldPos.y, worldPos.z);
+
+			cells[i] = new HexCell(type, type != HexCell.CellType.Air);
+			//cells[i] = new HexCell(type, true);
+
+			cells[i].position = position;
+			//cellsByCoordinates.Add(position, cells[i]);
+
+			AssignNeighbors(
+				cells[i], 
+				hexCellGridPosition[i].x,
+				hexCellGridPosition[i].y,
+				hexCellGridPosition[i].z,
+				size, i);
+
+		}
+
+		private HexCell.CellType DetermineCellType(float x, float y, float z)
+		{
+			float noiseValue = GlobalNoise.GetGlobalNoiseValue(x, z, World.Instance.noiseArray);
+			//float normalizedNoiseValue = (noiseValue + 1) / 2;
+			float maxHeight = noiseValue * World.Instance.maxHeight;
+
+			return y <= maxHeight ? HexCell.CellType.Grass : // Solid voxel
+				HexCell.CellType.Air; // Air voxel
+		}
+
+		private void AssignNeighbors(HexCell cell, int x, int y, int z, int size, int index)
+		{
+			if (x > 0)
+			{
+				cell.SetNeighbor(HexDirection.W, cells[index - 1]);
+				cell.SetBitmaskNeighbor(BitmaskNeighbors.W, cells[index - 1]);
+			}
+			if (z > 0)
+			{
+				if ((z & 1) == 0)
 				{
-					cell.SetNeighbor(HexDirection.SW, cells[index - size * size - 1]);
-					cell.SetBitmaskNeighbor(BitmaskNeighbors.SW, cells[index - size * size - 1]);
+					cell.SetNeighbor(HexDirection.SE, cells[index - size * size]);
+					cell.SetBitmaskNeighbor(BitmaskNeighbors.SE, cells[index - size * size]);
+
+					if (x > 0)
+					{
+						cell.SetNeighbor(HexDirection.SW, cells[index - size * size - 1]);
+						cell.SetBitmaskNeighbor(BitmaskNeighbors.SW, cells[index - size * size - 1]);
+					}
+				}
+				else
+				{
+					cell.SetNeighbor(HexDirection.SW, cells[index - size * size]);
+					cell.SetBitmaskNeighbor(BitmaskNeighbors.SW, cells[index - size * size]);
+
+					if (x < size - 1)
+					{
+						cell.SetNeighbor(HexDirection.SE, cells[index - size * size + 1]);
+						cell.SetBitmaskNeighbor(BitmaskNeighbors.SE, cells[index - size * size + 1]);
+
+					}
 				}
 			}
-			else
+		}
+
+		void AssignUpperNeighbors()
+		{
+			for (int i = 0; i < cells.Length; i++)
 			{
-				cell.SetNeighbor(HexDirection.SW, cells[index - size * size]);
-				cell.SetBitmaskNeighbor(BitmaskNeighbors.SW, cells[index - size * size]);
-
-				if (x < size - 1)
+				if (hexCellGridPosition[i].y < size - 1)
 				{
-					cell.SetNeighbor(HexDirection.SE, cells[index - size * size + 1]);
-					cell.SetBitmaskNeighbor(BitmaskNeighbors.SE, cells[index - size * size + 1]);
-
+					cells[i].neighborUp = cells[i + size];
+					cells[i].SetBitmaskNeighbor(BitmaskNeighbors.TOP, cells[i + size]);
 				}
 			}
-		}
-	}
 
-	void AssignUpperNeighbors()
-	{
-		for (int i = 0; i < cells.Length; i++)
+		}
+		public void SetNeighbor(int direction, HexChunk neighbor)
 		{
-			if (hexCellGridPosition[i].y < size - 1)
-			{
-				cells[i].neighborUp = cells[i + size];
-				cells[i].SetBitmaskNeighbor(BitmaskNeighbors.TOP, cells[i + size]);
-			}
+			neighbors[direction] = neighbor;
 		}
 
-	}
-	public void SetNeighbor(int direction, HexChunk neighbor)
-	{
-		neighbors[direction] = neighbor;
-	}
-
-	/* neighbors:
+		/* neighbors:
 	  0: +x (right)
 	  1: -x (left)
 	  2: +y (up)
@@ -154,4 +153,5 @@ public class HexChunk : MonoBehaviour
 	  4: +z (forward)
 	  5: -z (backward)
 	 */
+	}
 }

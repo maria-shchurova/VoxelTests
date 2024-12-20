@@ -1,20 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
-public partial class BuildingManager : MonoBehaviour
+namespace Assets.Scripts
 {
-    public Button addButton;
-    public Button removeButton;
-
-    public BuildingMode currentMode;
-
-    void Start()
+    public partial class BuildingManager : MonoBehaviour
     {
-        addButton.onClick.AddListener(() => { currentMode = BuildingMode.ADD; });
-        removeButton.onClick.AddListener(() => { currentMode = BuildingMode.REMOVE; });
+        public Button addButton;
+        public Button removeButton;
+
+        public BuildingMode currentMode;
+
+        void Start()
+        {
+            addButton.onClick.AddListener(() => { currentMode = BuildingMode.ADD; });
+            removeButton.onClick.AddListener(() => { currentMode = BuildingMode.REMOVE; });
+        }
+
+
     }
-
-
 }

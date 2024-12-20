@@ -1,5 +1,8 @@
-﻿public enum BuildingMode
+﻿namespace Assets.Scripts
 {
-    ADD,
-    REMOVE
+    public enum BuildingMode
+    {
+        ADD,
+        REMOVE
+    }
 }
