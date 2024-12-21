@@ -4,25 +4,28 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 
-[BurstCompile]
-public struct CreateChunksJob : IJob
+namespace Jobs
 {
-    public NativeArray<float3> HexChunkPosiitonsArray;
-    [ReadOnly] public int WorldSize;
-    [ReadOnly] public int ChunkSize;
-
-    public void Execute()
+    [BurstCompile]
+    public struct CreateChunksJob : IJob
     {
-        int index = 0;
-        for (int x = 0; x < WorldSize; x++)
+        public NativeArray<float3> HexChunkPosiitonsArray;
+        [ReadOnly] public int WorldSize;
+        [ReadOnly] public int ChunkSize;
+
+        public void Execute()
         {
-            for (int y = 0; y < WorldSize; y++)
+            int index = 0;
+            for (int x = 0; x < WorldSize; x++)
             {
-                for (int z = 0; z < WorldSize; z++)
+                for (int y = 0; y < WorldSize; y++)
                 {
-                    float3 chunkPosition = new float3(x * (HexMetrics.innerRadius * ChunkSize * 2), y * ChunkSize * HexMetrics.height, z * (HexMetrics.outerRadius * ChunkSize * 1.5f));
-                    HexChunkPosiitonsArray[index] = chunkPosition;
-                    index++;
+                    for (int z = 0; z < WorldSize; z++)
+                    {
+                        float3 chunkPosition = new float3(x * (HexMetrics.innerRadius * ChunkSize * 2), y * ChunkSize * HexMetrics.height, z * (HexMetrics.outerRadius * ChunkSize * 1.5f));
+                        HexChunkPosiitonsArray[index] = chunkPosition;
+                        index++;
+                    }
                 }
             }
         }

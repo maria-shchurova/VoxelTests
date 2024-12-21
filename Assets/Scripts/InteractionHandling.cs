@@ -14,10 +14,6 @@ public class InteractionHandling : MonoBehaviour
 	[SerializeField]
 	private BuildingManager modeManager;
 
-	void Start()
-    {
-        
-    }
 
 	void Update()
 	{
@@ -26,7 +22,7 @@ public class InteractionHandling : MonoBehaviour
 			HandleInput();
 		}
 
-		if (Input.GetKeyDown(KeyCode.T))
+		if (Input.GetKeyDown(KeyCode.G))
 		{
 			mesh.Triangulate(hexGrid.cells);
 		}

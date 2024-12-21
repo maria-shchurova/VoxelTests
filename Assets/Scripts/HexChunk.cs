@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Jobs;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -59,8 +60,8 @@ namespace Assets.Scripts
 			AssignUpperNeighbors();
 			mesh.Initialize();
 			mesh.Triangulate(cells);
+			mesh.Dispose();
 		}
-
 
 		private void CreateCell(Vector3 position, int i)
 		{
@@ -80,7 +81,6 @@ namespace Assets.Scripts
 				hexCellGridPosition[i].y,
 				hexCellGridPosition[i].z,
 				size, i);
-
 		}
 
 		private HexCell.CellType DetermineCellType(float x, float y, float z)

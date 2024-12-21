@@ -47,7 +47,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        MapDisplay display = FindObjectOfType<MapDisplay>();
+        MapDisplay display = FindFirstObjectByType<MapDisplay>();
 
         if(drawMode == DrawMode.NoiseMap)
         {

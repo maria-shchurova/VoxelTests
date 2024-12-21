@@ -1,4 +1,7 @@
+using System;
 using System.Linq;
+using Assets.Scripts.Jobs;
+using Jobs;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -35,13 +38,22 @@ namespace Assets.Scripts
 			hexMetricsCorners = HexMetrics.corners.ToNativeArrayFloat3(Allocator.Persistent);
 		}
 
-		public void Clear()
+		private void Clear()
 		{
 			hexMeshFilter.mesh.Clear(false);
-
-			// Reset the arrays
-			vertices = new NativeArray<float3>(vertices.Length, Allocator.Persistent);
-			triangles = new NativeArray<int>(triangles.Length, Allocator.Persistent);
+			
+			// Dispose of existing NativeArrays before creating new ones
+			// if (vertices.IsCreated) vertices.Dispose();
+			// if (triangles.IsCreated) triangles.Dispose();
+			var clearTrianglesJob = new ClearIntArrayJob { Array = triangles };
+			clearTrianglesJob.Schedule(triangles.Length, 64).Complete();
+			
+			var clearVerticesJob = new ClearFloat3ArrayJob(){ Array = vertices };
+			clearVerticesJob.Schedule(vertices.Length, 64).Complete();
+			
+			// // Reset the arrays
+			// vertices = new NativeArray<float3>(vertices.Length, Allocator.Persistent);
+			// triangles = new NativeArray<int>(triangles.Length, Allocator.Persistent);
 		}
 
 		public void Triangulate(HexCell[] cells)
@@ -75,12 +87,23 @@ namespace Assets.Scripts
 			hexMeshFilter.mesh.RecalculateNormals();
 		}
 
-		private void OnDestroy()
+		public void Dispose()
 		{
 			hexMetricsCorners.Dispose();
 			cellsCentersCoordinates.Dispose();
 			cellsBitmasks.Dispose();
 		}
 
+		private void OnDestroy()
+		{
+			try
+			{
+				Dispose();
+			}
+			catch (ObjectDisposedException e)
+			{
+				//Debug.LogWarning(e);
+			}
+		}
 	}
 }
