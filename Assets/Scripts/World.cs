@@ -70,7 +70,6 @@ namespace Assets.Scripts
 
         public void GenerateWorld()
         {
-
             if(GenerateFroHeightmap)
             {
                 if (Heightmap == null)

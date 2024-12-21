@@ -69,7 +69,7 @@ namespace Assets.Scripts
 
 			HexCell.CellType type = DetermineCellType(worldPos.x, worldPos.y, worldPos.z);
 
-			cells[i] = new HexCell(type, type != HexCell.CellType.Air);
+			cells[i] = new HexCell(this, type, type != HexCell.CellType.Air);
 			//cells[i] = new HexCell(type, true);
 
 			cells[i].position = position;
@@ -143,6 +143,13 @@ namespace Assets.Scripts
 		public void SetNeighbor(int direction, HexChunk neighbor)
 		{
 			neighbors[direction] = neighbor;
+		}
+
+		public void Recreate()
+		{
+			// mesh.Initialize();
+			mesh.Triangulate(cells);
+			mesh.Dispose();
 		}
 
 		/* neighbors:

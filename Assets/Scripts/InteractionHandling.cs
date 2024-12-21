@@ -6,14 +6,7 @@ using UnityEngine;
 public class InteractionHandling : MonoBehaviour
 {
 	[SerializeField]
-	private HexChunk hexGrid;
-
-	[SerializeField]
-	private HexMesh mesh;
-
-	[SerializeField]
 	private BuildingManager modeManager;
-
 
 	void Update()
 	{
@@ -21,31 +14,29 @@ public class InteractionHandling : MonoBehaviour
 		{
 			HandleInput();
 		}
-
-		if (Input.GetKeyDown(KeyCode.G))
-		{
-			mesh.Triangulate(hexGrid.cells);
-		}
-
 	}
 
 	void HandleInput()
 	{
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		if (Physics.Raycast(ray, out RaycastHit hit))
-		{
-            if (GetCellAtWorldPosition(hit.point) != null)
-            {
-				TouchCell(GetCellAtWorldPosition(hit.point));
-            }
-            else
-            {
-                Debug.Log("could not get closest cell at hit point");
-            }
-        }
+		
+		//first find the chunk:
+		
+		
+		// if (Physics.Raycast(ray, out RaycastHit hit))
+		// {
+  //           if (GetCellAtWorldPosition(hit.point) != null)
+  //           {
+		// 		TouchCell(GetCellAtWorldPosition(hit.point));
+  //           }
+  //           else
+  //           {
+  //               Debug.Log("could not get closest cell at hit point");
+  //           }
+  //       }
 	}
 
-	HexCell GetCellAtWorldPosition(Vector3 worldPosition)
+	HexCell GetCellAtWorldPosition(Vector3 worldPosition, HexChunk hexGrid)
 	{
 		HexCell closestCell = null;
 		float closestDistanceSqr = float.MaxValue; // Initialize to a large number
@@ -65,7 +56,7 @@ public class InteractionHandling : MonoBehaviour
 		return closestCell;
 	}
 
-	void TouchCell(HexCell cell)
+	void TouchCell(HexCell cell, HexChunk chunk)
 	{
 		if(modeManager.currentMode == BuildingMode.ADD)
         {
@@ -76,8 +67,8 @@ public class InteractionHandling : MonoBehaviour
 		{
 			cell.isActive = false;
 		}
-
-		mesh.Triangulate(hexGrid.cells);
+		
+		chunk.Recreate();
 	}
 
 }

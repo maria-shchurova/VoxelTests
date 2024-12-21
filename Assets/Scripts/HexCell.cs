@@ -13,9 +13,10 @@ namespace Assets.Scripts
         public HexCell neighborDown;
 
         public BitmaskNeighbors neighborsBitmask;
-
-        public HexCell(CellType type, bool isActive = true)
+        public HexChunk MyChunk;
+        public HexCell(HexChunk myChunk, CellType type, bool isActive = true)
         {
+            MyChunk = myChunk;
             this.isActive = isActive;
             this.type = type;
             neighbors = new HexCell[6]; 
